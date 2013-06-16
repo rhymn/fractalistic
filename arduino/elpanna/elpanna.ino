@@ -86,7 +86,7 @@ void loop(){
   
   elpanna.setEffect(outputRes, one, two, three, four, five, six);
   
-  Serial.print("LOG;");
+  Serial.print("<log>");
 
   Serial.print(pid.getLastMeasureTime());
   Serial.print("; ");
@@ -97,6 +97,7 @@ void loop(){
   elpanna.printState();
   pid.printState();
   
+  Serial.print("</log>");
   Serial.println();
 
   

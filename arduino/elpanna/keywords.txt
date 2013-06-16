@@ -1,0 +1,9 @@
+Elpanna	KEYWORD1
+PID	KEYWORD1
+getDesiredTemp	KEYWORD2
+getTempFromRes	KEYWORD2
+compute	KEYWORD2
+measure	KEYWORD2
+printState	KEYWORD2
+isError	KEYWORD2
+openCircuit	KEYWORD2

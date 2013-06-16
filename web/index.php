@@ -41,20 +41,85 @@ require_once('lib.php');
 						<td>D</td>
 					</th>
 					
+					<?
+						$datasets = array(
+							'output' => array(
+								'label' => 'Output',
+								'data' => array()
+							),
+							'ref' => array(
+								'label' => 'Ref',
+								'data' => array()
+							),
+							/*'R' => array(
+								'label' => 'Res',
+								'data' => array()
+							),*/
+							'T' => array(
+								'label' => 'Temp',
+								'data' => array()
+							),
+							'lastInput' => array(
+								'label' => 'Senaste in',
+								'data' => array()
+							),
+							'lastError' => array(
+								'label' => 'Senaste fel',
+								'data' => array()
+							),
+							'lastOutput' => array(
+								'label' => 'Senaste ut',
+								'data' => array()
+							),
+							'p' => array(
+								'label' => 'P',
+								'data' => array()
+							),
+							'i' => array(
+								'label' => 'I',
+								'data' => array()
+							),
+							'd' => array(
+								'label' => 'D',
+								'data' => array()
+							)
+						);
+					
+					?>
+					
 					<? foreach($result as $row):
 					
 						$time = (int) ($row['time'] / 1000);
+						
+						$output[] 							= array($time, (float) $row['output']);
+						$datasets['output']['data'][] 		= array($time, (float) $row['output']);
 
-						$output[] 		= array($time, (float) $row['output']);
-						$ref[] 			= array($time, (float) $row['ref']);
-						$R[] 			= array($time, (float) $row['R']);
-						$T[] 			= array($time, (float) $row['T']);
-						$lastInput[] 	= array($time, (float) $row['lastInput']);
-						$lastError[] 	= array($time, (float) $row['lastError']);
-						$lastOutput[] 	= array($time, (float) $row['lastOutput']);
-						$p[] 			= array($time, (float) $row['p']);
-						$i[] 			= array($time, (float) $row['i']);
-						$d[] 			= array($time, (float) $row['d']);
+						$ref[] 								= array($time, (float) $row['ref']);
+						$datasets['ref']['data'][] 			= array($time, (float) $row['ref']);
+
+						$R[] 								= array($time, (float) $row['R']);
+						// $datasets['R']['data'][] 			= array($time, (float) $row['R']);
+
+						$T[] 								= array($time, (float) $row['T']);
+						$datasets['T']['data'][] 			= array($time, (float) $row['T']);
+
+						$lastInput[] 						= array($time, (float) $row['lastInput']);
+						$datasets['lastInput']['data'][]	= array($time, (float) $row['lastInput']);
+
+						$lastError[] 						= array($time, (float) $row['lastError']);
+						$datasets['lastError']['data'][] 	= array($time, (float) $row['lastError']);
+
+						$lastOutput[] 						= array($time, (float) $row['lastOutput']);
+						$datasets['lastOutput']['data'][] 	= array($time, (float) $row['lastOutput']);
+
+						$p[] 								= array($time, (float) $row['p']);
+						$datasets['p']['data'][] 			= array($time, (float) $row['p']);
+
+						$i[] 								= array($time, (float) $row['i']);
+						$datasets['i']['data'][] 			= array($time, (float) $row['i']);
+
+						$d[] 								= array($time, (float) $row['d']);
+						$datasets['d']['data'][] 			= array($time, (float) $row['d']);
 	
 					?>
 						<tr>
@@ -104,19 +169,16 @@ require_once('lib.php');
 		<![endif]-->
 
 		<script>
+
+			var datasets = eval(<?=json_encode($datasets) ?>);
 			
-			var output 			= eval('<?=json_encode($output) ?>');
-			var ref 			= eval('<?=json_encode($ref) ?>');
-			var R 				= eval('<?=json_encode($R) ?>');
-			var T 				= eval('<?=json_encode($T) ?>');
-			var lastInput 		= eval('<?=json_encode($lastInput) ?>');
-			var lastError		= eval('<?=json_encode($lastError) ?>');
-			var lastOutput		= eval('<?=json_encode($lastOutput) ?>');
-			var p 				= eval('<?=json_encode($p) ?>');
-			var i 				= eval('<?=json_encode($i) ?>');
-			var d 				= eval('<?=json_encode($d) ?>');
+			var datasetArray = [];
+			
+			$.each(datasets, function(key, val){
+				datasetArray.push(val);
+			});
 		
-			$.plot("#placeholder", [ output, ref, R, T, lastInput, lastError, lastOutput, p, i, d ]);
+			$.plot("#placeholder", datasetArray);
 		</script>
 
 	</body>

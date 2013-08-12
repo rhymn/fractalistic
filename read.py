@@ -20,7 +20,7 @@ def getserial(ports):
 			ser = serial.Serial(port, 9600, timeout=2)
 			ser.setDTR(True)
 			return ser
-		except Exception:
+		except SerialException:
 			print 'Kan inte öppna %s' % port
 
 	print 'Hittade ingen port, är Arduinon ansluten?'

@@ -1,6 +1,9 @@
 fractalistic
 ============
 
+Project for controlling a heater using Arduino and Raspberry Pi
+
+
 Uploading to Arduino
 ------------
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.

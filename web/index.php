@@ -153,7 +153,7 @@ require_once('lib.php');
 
 		<div id="footer">
 			<div class="container">
-				<p class="muted credit">Den store elpanneprojekt</p>
+				<p class="muted credit">fractalistic</p>
 			</div>
 		</div>
 

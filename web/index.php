@@ -1,6 +1,7 @@
 <?
 
 require_once('lib.php');
+$limit = $_GET['limit'];
 
 ?>
 
@@ -8,7 +9,7 @@ require_once('lib.php');
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>RPi</title>
+		<title>fractalistic</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8" />
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
@@ -23,7 +24,11 @@ require_once('lib.php');
 			<!-- Begin page content -->
 			<div class="container">
 				<div class="page-header">
-					<h1>Hej</h1>
+					<h1>fractalistic</h1>
+
+					<form id="form">
+						Visa <input name="limit" id="limit" value="<?=$limit?>" maxlength="5" style="width: 50px;" /> rader
+					</form>
 				</div>
 				
 				<table class="table">
@@ -85,9 +90,9 @@ require_once('lib.php');
 							)
 						);
 					
-					?>
-					
-					<? foreach($result as $row):
+					$result = readFromDB($limit);
+
+					foreach($result as $row):
 					
 						$time = (int) ($row['time'] / 1000);
 						
@@ -169,6 +174,14 @@ require_once('lib.php');
 		<![endif]-->
 
 		<script>
+
+			jQuery(function(){
+				jQuery('#limit').keyup(function(e){
+					if(e.keyCode == 13){
+						jQuery('#form').submit();
+					}
+				});
+			});
 
 			var datasets = eval(<?=json_encode($datasets) ?>);
 			

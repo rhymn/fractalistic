@@ -104,7 +104,6 @@ bool Elpanna::isError(){
 void Elpanna::setEffect(int e, int one, int two, int three, int four, int five, int six){
 
 	// Each effect step has a binary equivalent for digitalWrite
-	// This will likely be different using real relays
 	byte pattern[] = {B000000, B100000, B101000, B101010, B011010, B010110, B010101, B110101, B111101, B111111};
 
 	digitalWrite(two, bitRead(pattern[e], 4)); digitalWrite(four, bitRead(pattern[e], 2)); digitalWrite(six, bitRead(pattern[e], 0));

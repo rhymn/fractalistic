@@ -9,6 +9,8 @@
 		<!-- Bootstrap Core CSS-->
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 
+		<link rel="stylesheet" href="css/glyphicons.css" />
+
 		<!-- Core CSS-->
 		<link href="css/style.css" rel="stylesheet">
 
@@ -42,14 +44,16 @@
 
 		<div class="container">
 			<div class="row">
-				<div class="col-xs-8" role="main">
+				<div class="col-xs-6" role="main">
 					<p class="lead">Temperaturen är inställd på 60.0 grader</p>
 				</div>
-				<div class="col-xs-2">
-					<button class="btn fr-btn" href="#">-</button>
-				</div>
-				<div class="col-xs-2">
-					<button class="btn fr-btn" href="#">+</button>
+				<div class="col-xs-6">
+
+					<div class="btn-group" data-toggle="buttons">
+						<button class="btn fr-btn" id="dec-temp" href="#"><span class="glyphicon glyphicon-minus"></span></button>
+						<button class="btn fr-btn" id="inc-temp" href="#"><span class="glyphicon glyphicon-plus"></span></button>
+					</div>
+
 				</div>
 			</div>
 
@@ -70,6 +74,31 @@
 					<p class="lead">Utomhus: 8.5 grader</p>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="col-xs-6" role="main">
+					<p class="lead">Elementpump är
+				</div>
+
+				<div class="col-xs-6">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn fr-btn">
+							<input type="radio" name="options" id="off"> Av
+						</label>
+			
+						<label class="btn fr-btn">
+							<input type="radio" name="options" id="on"> På
+						</label>
+					
+						<label class="btn fr-btn active">
+							<input type="radio" name="options" id="auto"> Auto
+						</label>
+					</div>
+				</div>
+
+
+			</div>
+
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

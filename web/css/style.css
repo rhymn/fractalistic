@@ -1,18 +1,39 @@
 *{
+}
+
+.btn{
 	border-radius: 0px !important;
 }
 
+
 .navbar{
-	border: 0px solid #ddd;
-	background-color: #DF0C00;
+	border: 0px solid #000;
+	background-color: #919191;
 	padding-top: 10px;
 	padding-bottom: 10px;
 }
 
+.btn{
+	box-shadow: none !important;
+}
+
 .fr-btn{
-	width: 100%;
-	background-color: #EF1C10;
+	background-color: #919191;
 	color: #FFF;
+}
+
+.fr-btn.active{
+	font-weight: bold;
+	background-color: #717171;
+}
+
+
+.fr-btn-on{
+	background-color: #919191;
+}
+
+.fr-btn-off{
+	background-color: #AAA;
 }
 
 .fr-btn:hover{

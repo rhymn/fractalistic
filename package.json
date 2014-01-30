@@ -1,13 +1,12 @@
 {
-	"name" : "YUI3HerokuExampleSimple",
-	"version" : "0.0.1",
-
-	"dependencies" : {
-		"express": "3.0.x"
-	},
-
-	"engines": {
-		"node": "0.8.x",
-		"npm": "1.1.x"
-	}
+  "name": "fractalistic",
+  "description": "fractalistic app",
+  "main": "web.js",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {"start": "node web"},
+  "engines": {"node": "0.10.25"},
+  "dependencies": {
+    "express": "3.4.8"
+  }
 }

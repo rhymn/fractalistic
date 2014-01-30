@@ -1,0 +1,36 @@
+*{
+	border-radius: 0 !important;
+}
+
+.navbar{
+	border: 0px solid #000;
+	background-color: #919191;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+.btn{
+	box-shadow: none !important;
+}
+
+.fr-btn{
+	background-color: #919191;
+	color: #FFF;
+}
+
+.fr-btn.active{
+	font-weight: bold;
+	background-color: #717171;
+}
+
+
+.fr-btn-on{
+	background-color: #919191;
+}
+
+.fr-btn-off{
+	background-color: #AAA;
+}
+
+.fr-btn:hover{
+}

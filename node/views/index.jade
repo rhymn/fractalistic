@@ -2,7 +2,7 @@ extends layout
 
 block content
 
-	div.navbar.navbar-default(role='navigation')
+	div.navbar.navbar-default#navigation(role='navigation')
 		div.navbar-header
 			a.navbar-brand
 				img(src='/images/logo_white_line.png')
@@ -14,8 +14,16 @@ block content
 				script.
 					$(function(){
 						$('#inc-temp').on('click', function(e){
-							$.get( '/setdata', function(data) {
-								console.log( data );
+							$.ajax( {
+								url: '/setdata', 
+								beforeSend: function(){
+									$('#navigation').addClass('navbar-wait');
+								},
+								complete: function(){
+									$('#navigation').removeClass('navbar-wait');
+								}
+							}).done(function(data){
+								console.log(data);
 							});
 						});
 					});

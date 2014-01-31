@@ -15,6 +15,7 @@ exports.setdata = function(req, res){
   var request = require('request');
 
   request({
+    // 'url': 'http://ramsholmen.pnd.se:8192',
     'url': 'http://api.tumblr.com/v2/blog/scipsy.tumblr.com/info?api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4',
     'json': true
   }, function(error, response, body){

@@ -9,6 +9,11 @@
 	padding-bottom: 10px;
 }
 
+.navbar-wait{
+	background-color: #E19191 !important;
+}
+
+
 .btn{
 	box-shadow: none !important;
 }

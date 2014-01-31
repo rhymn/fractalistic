@@ -11,6 +11,15 @@ block content
 		div.row
 			div.col-xs-6
 				p.lead Temperaturen är inställd på 60.0 grader
+				script.
+					$(function(){
+						$('#inc-temp').on('click', function(e){
+							$.get( '/setdata', function(data) {
+								console.log( data );
+							});
+						});
+					});
+
 
 			div.col-xs-6
 				div.btn-group(data-toggle='buttons')
@@ -42,4 +51,4 @@ block content
 					label.btn.fr-btn.active På
 						input(type='radio', id='on')
 					label.btn.fr-btn Auto
-						input(type='radio', id='auto')						
+						input(type='radio', id='auto')

@@ -4,10 +4,16 @@ html
     title= title
     meta(char='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/bootstrap/css/glyphicons.css')
+
+    if isLocal
+        link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+        script(src='/jquery/jquery-1.11.0.min.js')
+        script(src='/bootstrap/js/bootstrap.min.js')
+    else
+        link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css')
+        script(src='//code.jquery.com/jquery-1.11.0.min.js')
+        script(src='//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js')
+
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/jquery/jquery-1.11.0.min.js')
-    script(src='/bootstrap/js/bootstrap.min.js')
   body
     block content

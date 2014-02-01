@@ -4,8 +4,15 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'fractalistic' });
+  var isLocal = false;
+
+  if(req.headers.host.split(':')[0] == 'localhost'){
+    isLocal = true;
+  }
+
+  res.render('index', { title: 'fractalistic', 'local': isLocal });
 };
+
 
 exports.helloworld = function(req, res){
   res.render('helloworld', { title: 'hello world' });
@@ -34,18 +41,12 @@ exports.getweatherdata = function(req, res){
 
 
 exports.setdata = function(req, res){
-  var request = require('request');
-  request({
-    // 'url': 'http://r.pnd.se:8192',
-    'url': 'http://api.tumblr.com/v2/blog/scipsy.tumblr.com/info?api_key=fuiKNFp9vQFvjLNvx4sUwti4Yb5yGutBN4Xh10LXZhhRKjWlV4',
-    'json': true
-  }, function(error, response, body){
+  var pg = require('pg');
 
-    if (!error && response.statusCode === 200) {
-      res.send(body.response.blog);
-    }
-    
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    client.query('INSERT INTO test(name) VALUES("david")');
   });
 
+  res.send('away');
 };
 

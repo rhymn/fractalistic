@@ -24,26 +24,14 @@ block content
 
 		div.row
 			div.col-xs-12
-				p.lead Inomhus: 20.3 grader
-
-		div.row
-			div.col-xs-12
 				p.lead
 					span Utomhus: 
 					span#outside-temp
-
 		div.row
-			div.col-xs-6
-				p.lead Elementpump är
-
-			div.col-xs-6
-				div.btn-group(data-toggle='buttons')
-					label.btn.fr-btn Av
-						input(type='radio', id='off')
-					label.btn.fr-btn.active På
-						input(type='radio', id='on')
-					label.btn.fr-btn Auto
-						input(type='radio', id='auto')
+			div.col-xs-12
+				p.lead
+					span Vindhastighet: 
+					span#wind-speed
 
 	script.
 		$(function(){
@@ -88,7 +76,7 @@ block content
 				dataType: 'json',
 			}).done(function(data){
 				$('#outside-temp').html(data.t);
-				console.log(data);
+				$('#wind-speed').html(data.ws);
 			});
 
 		});

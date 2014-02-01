@@ -5,8 +5,7 @@
 .navbar{
 	border: 0px solid #000;
 	background-color: #919191;
-	padding-top: 10px;
-	padding-bottom: 10px;
+	min-height: 156px;
 }
 
 .navbar-wait{

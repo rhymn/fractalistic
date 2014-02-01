@@ -39,16 +39,7 @@ exports.getweatherdata = function(req, res){
 
 };
 
-
 exports.setdata = function(req, res){
-  var pg = require('pg');
-
-  console.log(process.env.DATABASE_URL);
-
-  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
-    client.query('INSERT INTO test(name) VALUES("david")');
-  });
-
   res.send('away');
 };
 

@@ -2,7 +2,7 @@
   "name": "fractalistic",
   "description": "fractalistic app",
   "main": "node/app.js",
-  "version": "0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {"start": "node node/app.js"},
   "engines": {"node": "0.10.25"},

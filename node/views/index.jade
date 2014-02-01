@@ -11,31 +11,13 @@ block content
 		div.row
 			div.col-xs-6
 				p.lead Temperaturen är inställd på 60.0 grader
-				script.
-					$(function(){
-						$('#inc-temp').on('click', function(e){
-							$.ajax( {
-								url: '/setdata', 
-								beforeSend: function(){
-									$('#navigation').addClass('navbar-wait');
-								},
-								complete: function(){
-									$('#navigation').removeClass('navbar-wait');
-								}
-							}).done(function(data){
-								console.log(data);
-							});
-						});
-					});
-
 
 			div.col-xs-6
 				div.btn-group(data-toggle='buttons')
-					button.btn.fr-btn(id='dec-temp')
-						span.glyphicon.glyphicon-minus
-					button.btn.fr-btn(id='inc-temp')
-						span.glyphicon.glyphicon-plus
-
+					label.btn.fr-btn.active#home Hemma
+						input(type='radio', disable="disable")
+					label.btn.fr-btn#away Borta
+						input(type='radio')
 		div.row
 			div.col-xs-12
 				p.lead Pannan håller 60.0 grader
@@ -46,7 +28,9 @@ block content
 
 		div.row
 			div.col-xs-12
-				p.lead Utomhus: 8.5 grader
+				p.lead
+					span Utomhus: 
+					span#outside-temp
 
 		div.row
 			div.col-xs-6
@@ -60,3 +44,51 @@ block content
 						input(type='radio', id='on')
 					label.btn.fr-btn Auto
 						input(type='radio', id='auto')
+
+	script.
+		$(function(){
+			$('#home').on('click', function(e){
+
+				$.ajax( {
+					url: '/setdata', 
+					data: {'mode': 'home'},
+					dataType: 'json',
+					beforeSend: function(){
+						$('#navigation').addClass('navbar-wait');
+					},
+					complete: function(){
+						$('#navigation').removeClass('navbar-wait');
+					}
+				}).done(function(data){
+					console.log('home');
+					console.log(data.title);
+				});
+			});
+
+			$('#away').on('click', function(e){
+				$.ajax( {
+					url: '/setdata', 
+					data: {'mode': 'away'},
+					dataType: 'json',
+					beforeSend: function(){
+						$('#navigation').addClass('navbar-wait');
+					},
+					complete: function(){
+						$('#navigation').removeClass('navbar-wait');
+					}
+				}).done(function(data){
+					console.log('away');
+					console.log(data.title);
+				});
+			});
+
+
+			$.ajax( {
+				url: '/getweatherdata', 
+				dataType: 'json',
+			}).done(function(data){
+				$('#outside-temp').html(data.t);
+				console.log(data);
+			});
+
+		});

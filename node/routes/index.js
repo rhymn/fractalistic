@@ -3,19 +3,16 @@
  * GET home page.
  */
 
+
+
 exports.index = function(req, res){
-  var isLocal = false;
+  isLocal = false;
 
   if(req.headers.host.split(':')[0] == 'localhost'){
     isLocal = true;
   }
 
   res.render('index', { title: 'fractalistic', 'local': isLocal });
-};
-
-
-exports.helloworld = function(req, res){
-  res.render('helloworld', { title: 'hello world' });
 };
 
 
@@ -39,7 +36,52 @@ exports.getweatherdata = function(req, res){
 
 };
 
+exports.initdb = function(req, res){
+  var pg = require('pg');
+  var url = process.env.DATABASE_URL || 'postgres://nodetest:nodetest@localhost:5432/david';
+
+  var date = new Date();
+
+  var client = new pg.Client(url);
+  client.connect();
+  client.query('DROP TABLE IF EXISTS settings');
+  client.query('DROP TABLE IF EXISTS stat');
+
+  client.query('CREATE TABLE settings(id SERIAL, mode VARCHAR, date DATE)');
+  client.query('CREATE TABLE stat(id SERIAL, mode VARCHAR, date DATE, t VARCHAR)');
+
+  client.query('INSERT INTO settings(id, date) VALUES(1, $1)', [date]);
+  client.query('INSERT INTO stat(id, date) VALUES(1, $1)', [date]);
+
+  res.send(':)');
+}
+
 exports.setdata = function(req, res){
-  res.send('away');
+
+  var mode = req.query.mode || null;
+
+  if(mode != 'home' && mode != 'away'){
+
+  }
+
+  var pg = require('pg');
+  var url = process.env.DATABASE_URL || 'postgres://nodetest:nodetest@localhost:5432/david';
+
+  var date = new Date();
+
+  var client = new pg.Client(url);
+  client.connect();
+  client.query('UPDATE settings SET date=$1, mode=$2 WHERE id=1', [date, mode]);
+
+  res.send(':)');
 };
+
+
+
+
+
+
+
+
+
 

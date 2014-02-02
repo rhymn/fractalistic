@@ -28,10 +28,10 @@ if ('development' == app.get('env')) {
 }
 
 app.get('/', routes.index);
-app.get('/users', user.list);
-app.get('/helloworld', routes.helloworld);
 
-app.get('/setdata', routes.setdata);
+app.get('/initdb', routes.initdb);
+
+app.get('/setdata/:mode', routes.setdata);
 app.get('/getweatherdata', routes.getweatherdata);
 
 http.createServer(app).listen(app.get('port'), function(){

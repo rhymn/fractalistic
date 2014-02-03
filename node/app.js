@@ -33,7 +33,7 @@ app.get('/users', user.list);
 app.get('/setsettings', routes.setsettings);
 app.get('/getsettings', routes.getsettings);
 
-app.get('/setstat', routes.setsstat);
+app.get('/setstat', routes.setstat);
 app.get('/getstat', routes.getstat);
 
 app.get('/getweatherdata', routes.getweatherdata);

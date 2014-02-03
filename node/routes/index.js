@@ -1,7 +1,7 @@
 
-/*
- * GET home page.
- */
+
+var mongo = require('mongodb');
+var url = process.env.MONGOHQ_URL || 'mongodb://fractalistic:fractalistic-pwd@troup.mongohq.com:10080/fractalistic';
 
 
 
@@ -36,42 +36,33 @@ exports.getweatherdata = function(req, res){
 
 };
 
-exports.initdb = function(req, res){
-  var pg = require('pg');
-  var url = process.env.DATABASE_URL || 'postgres://nodetest:nodetest@localhost:5432/david';
-
-  var date = new Date();
-
-  var client = new pg.Client(url);
-  client.connect();
-  client.query('DROP TABLE IF EXISTS settings');
-  client.query('DROP TABLE IF EXISTS stat');
-
-  client.query('CREATE TABLE settings(id SERIAL, mode VARCHAR, date DATE)');
-  client.query('CREATE TABLE stat(id SERIAL, mode VARCHAR, date DATE, t VARCHAR)');
-
-  client.query('INSERT INTO settings(id, date) VALUES(1, $1)', [date]);
-  client.query('INSERT INTO stat(id, date) VALUES(1, $1)', [date]);
-
-  res.send(':)');
+exports.getsettings = function(req, res){
+  mongo.Db.connect(url, function (err, db) {
+    db.collection('settings', function(er, collection) {
+      collection.findOne({key:1}, function(er, item) {
+        res.json(item);
+      });
+    });
+  });
 }
 
-exports.setdata = function(req, res){
+exports.setsettings = function(req, res){
 
   var mode = req.query.mode || null;
 
   if(mode != 'home' && mode != 'away'){
-
+    res.send(':(');
+    return;
   }
-
-  var pg = require('pg');
-  var url = process.env.DATABASE_URL || 'postgres://nodetest:nodetest@localhost:5432/david';
 
   var date = new Date();
 
-  var client = new pg.Client(url);
-  client.connect();
-  client.query('UPDATE settings SET date=$1, mode=$2 WHERE id=1', [date, mode]);
+  mongo.Db.connect(url, function (err, db) {
+    db.collection('settings', function(er, collection) {
+      collection.update({key:1}, {$set:{'mode': mode, 'date': date}}, {safe: true}, function(er,rs) {
+      });
+    });
+  });
 
   res.send(':)');
 };
@@ -80,8 +71,28 @@ exports.setdata = function(req, res){
 
 
 
+exports.getstat = function(req, res){
+  mongo.Db.connect(url, function (err, db) {
+    db.collection('stat', function(er, collection) {
+      collection.findOne({key:1}, function(er, item) {
+        res.json(item);
+      });
+    });
+  });
+}
 
+exports.setstat = function(req, res){
+  var date = new Date();
 
+  mongo.Db.connect(url, function (err, db) {
+    db.collection('settings', function(er, collection) {
+      collection.update({key:1}, {$set:{'mode': mode, 'date': date}}, {safe: true}, function(er,rs) {
+      });
+    });
+  });
+
+  res.send(':)');
+};
 
 
 

@@ -38,7 +38,7 @@ block content
 			$('#home').on('click', function(e){
 
 				$.ajax( {
-					url: '/setdata', 
+					url: '/setsettings', 
 					data: {'mode': 'home'},
 					dataType: 'json',
 					beforeSend: function(){
@@ -55,7 +55,7 @@ block content
 
 			$('#away').on('click', function(e){
 				$.ajax( {
-					url: '/setdata', 
+					url: '/setsettings', 
 					data: {'mode': 'away'},
 					dataType: 'json',
 					beforeSend: function(){

@@ -30,9 +30,12 @@ if ('development' == app.get('env')) {
 app.get('/', routes.index);
 app.get('/users', user.list);
 
-app.get('/initdb', routes.initdb);
+app.get('/setsettings', routes.setsettings);
+app.get('/getsettings', routes.getsettings);
 
-app.get('/setdata', routes.setdata);
+app.get('/setstat', routes.setsstat);
+app.get('/getstat', routes.getstat);
+
 app.get('/getweatherdata', routes.getweatherdata);
 
 http.createServer(app).listen(app.get('port'), function(){

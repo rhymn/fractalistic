@@ -1,5 +1,5 @@
 # fractalistic
-A polyglot project for controlling a heater using Arduino and Raspberry Pi over the Internet.
+A project for controlling a heater using Arduino over the Internet.
 
 ## uploading to Arduino
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.
@@ -8,15 +8,18 @@ A polyglot project for controlling a heater using Arduino and Raspberry Pi over 
 ### todo
 1. Temperature runtime adjustment
 2. Outside temperature measure
-3. Insida temperature measure
+3. Inside temperature measure
 4. Radiator / water pump control (on/off)
 
-
 ### Heater
-#### Arduino
+400V (3 Phase) electric heater.
 
-### Middleware
-Python on a Raspberry Pi
+### Arduino Uno
+PID Regulator controlling temperature with 6 relays in 9 steps
+Client checks for changes in the API every n minutes.
 
-### Webapp
-Node.js with Express and Jade hosted at Heroku
+### Arduino Ethernet Adapter
+Interface with the Internet
+
+### API and Webapp
+A simple Node.js webapp hosted at Heroku, Mongodb at MongoHQ

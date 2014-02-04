@@ -6,13 +6,16 @@ A project for controlling a heater using Arduino over the Internet.
 
 ## Arduino Uno
 PID Regulator controlling temperature with 6 relays in 9 steps
-Client checks for changes in the API every n minutes.
+
+Arduinoclient checks for changes and sends stats using the API every n minutes.
 
 ## Arduino Ethernet Adapter
 Interface with the Internet
 
 ## API and Webapp
-A simple Node.js webapp hosted at Heroku, Mongodb at MongoHQ
+A simple Node.js webapp that can set temperature and display stats from the Arduino
+
+hosted at Heroku, Mongodb at MongoHQ
 
 ### uploading to Arduino
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.

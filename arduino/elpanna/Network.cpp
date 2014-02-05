@@ -29,7 +29,7 @@ void Network::manageConn(){
 void Network::request(){
   if(_client.connect(_server, 80)){
     _client.println("GET /getsettings HTTP/1.1");
-    _client.println("Host: r.pnd.se");
+    _client.println("Host: " + _server);
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
   }

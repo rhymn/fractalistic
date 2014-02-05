@@ -1,6 +1,9 @@
 
 #include <Elpanna.h>
 #include <PID.h>
+#include <SPI.h>
+#include <Ethernet.h>
+#include <Network.h>
 
 /**
  * Ett enkelt reglerprogram för att styra en panna
@@ -28,8 +31,11 @@ const float Kp = 3,
             Ki = 0.8, 
             Kd = 1;
 
+const unsigned long postingInterval = 60 * 1000; // 1 minute
+
 Elpanna elpanna(60, 12, 13, A0);
 PID pid(Kp, Ki, Kd);
+Network network();
 
 void setup(){
 
@@ -109,6 +115,13 @@ void loop(){
   else{
     digitalWrite(errLED, LOW);
     digitalWrite(okLED, HIGH);
+  }
+
+
+  network.manageConn();
+
+  if(millis() - lastConnTime > postingInterval){
+    network.request();
   }
 
   delay(10000);

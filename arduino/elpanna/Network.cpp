@@ -2,12 +2,12 @@
 #include "Network.h"
 
 
-Network::Network(){
+Network::Network(byte mac[], IPAdress ip, IPAdress dns, char server[])
+ : _ip(ip), _dns(dns) 
+{
   delay(1000);
 
-  _mac = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-  _ip = ;
-  _dns = dns;
+  _mac = mac;
   _server = server;
 
   _lastConn = false;
@@ -28,8 +28,23 @@ void Network::manageConn(){
 
 void Network::request(){
   if(_client.connect(_server, 80)){
-
+    _client.println("GET /getsettings HTTP/1.1");
+    _client.println("Host: r.pnd.se");
+    _client.println("User-Agent: ArduinoEthernet");
+    _client.println("Connection: close");
   }
+
+  else{
+    _client.stop();
+  }
+
+  while(Serial.available() > 0){
+    char in = Serial.read();
+  }
+
+
+  // Save state of connection
+  _lastConn = _client.connected();
 }
 
 

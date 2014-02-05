@@ -35,7 +35,13 @@ const unsigned long postingInterval = 60 * 1000; // 1 minute
 
 Elpanna elpanna(60, 12, 13, A0);
 PID pid(Kp, Ki, Kd);
-Network network();
+
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+IPAddress ip(192.168.0.167);
+IPAddress dns(1,1,1,1);
+char server[] = "r.pnd.se";
+
+Network network(mac, ip, dns, server);
 
 void setup(){
 

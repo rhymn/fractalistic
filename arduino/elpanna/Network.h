@@ -16,8 +16,8 @@ class Network{
   private:
     boolean _lastConn;
     byte _mac[];
-    IPAdress _ip;
-    IPAdress _dns;
+    IPAddress _ip;
+    IPAddress _dns;
     Client _client;
 };
 

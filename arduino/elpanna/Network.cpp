@@ -2,7 +2,7 @@
 #include "Network.h"
 
 
-Network::Network(byte mac[], IPAdress ip, IPAdress dns, char server[])
+Network::Network(byte mac[], IPAddress ip, IPAddress dns, char server[])
  : _ip(ip), _dns(dns) 
 {
   delay(1000);

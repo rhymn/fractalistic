@@ -1,6 +1,6 @@
 /*
   Elpanna.h - Library for ..
-  Created by David 26 may 2013.
+  Created may 2013.
   Released into the public domain.
 */
 

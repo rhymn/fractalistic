@@ -26,3 +26,6 @@ hosted at Heroku, Mongodb at MongoHQ
 2. Outside temperature measure
 3. Inside temperature measure
 4. Radiator / water pump control (on/off)
+
+### More
+http://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection

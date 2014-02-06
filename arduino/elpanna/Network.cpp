@@ -37,15 +37,12 @@ void Network::manageConn(){
 }
 
 
-void Network::request(int temp){
-
-  Serial.print("T: ");
-  Serial.print(temp);
-  Serial.println();
-
+void Network::setstat(int temp){
   if(_client.connect(_server, 80)){
     Serial.println("Ansluten.");
-    _client.println("GET /setstat HTTP/1.1");
+    _client.print("GET /setstat/temp/");
+    _client.print(temp);
+    _client.println(" HTTP/1.1");
     _client.println("Host: r.pnd.se");
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
@@ -59,13 +56,41 @@ void Network::request(int temp){
 
   while(_client.available() > 0){
     char in = _client.read();
-    Serial.print(in);
+    Serial.println(in);
   }
-
 
   // Save state of connection
   _lastConn = _client.connected();
 }
+
+
+void Network::getsettings(){
+  if(_client.connect(_server, 80)){
+    Serial.println("Ansluten.");
+    _client.print("GET /getsettings HTTP/1.1");
+    _client.println("Host: r.pnd.se");
+    _client.println("User-Agent: ArduinoEthernet");
+    _client.println("Connection: close");
+    _client.println();
+  }
+
+  else{
+    _client.stop();
+    Serial.println("Stoppar klient.");
+  }
+
+  while(_client.available() > 0){
+    char in = _client.read();
+    Serial.println(in);
+  }
+
+  // Save state of connection
+  _lastConn = _client.connected();
+}
+
+
+
+
 
 
 IPAddress Network::getIP(){

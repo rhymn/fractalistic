@@ -133,11 +133,10 @@ void loop(){
 
   network.manageConn();
 
-  Serial.println( postingInterval - (millis() - lastConnTime) );
-
   if(millis() - lastConnTime > postingInterval){
     Serial.println("Nytt anrop");
-    network.request(elpanna.getTemp());
+    network.setstat(elpanna.getTemp());
+    network.getsettings();
 
     lastConnTime = millis();
   }

@@ -20,7 +20,10 @@ block content
 						input(type='radio')
 		div.row
 			div.col-xs-12
-				p.lead Pannan håller 60.0 grader
+				p.lead
+					span Pannan håller 
+					span#water-temp
+					span  grader
 
 		div.row
 			div.col-xs-12
@@ -77,6 +80,14 @@ block content
 			}).done(function(data){
 				$('#outside-temp').html(data.t);
 				$('#wind-speed').html(data.ws);
+			});
+
+
+			$.ajax( {
+				url: '/getstat', 
+				dataType: 'json',
+			}).done(function(data){
+				$('#water-temp').html(data.temp);
 			});
 
 		});

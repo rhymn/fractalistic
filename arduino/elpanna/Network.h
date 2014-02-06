@@ -15,7 +15,8 @@ class Network{
     Network(byte mac[], IPAddress ip, IPAddress myDns, char server[]);
     void begin();
     void manageConn();
-    void request(int temp);
+    void setstat(int temp);
+    void getsettings();
     IPAddress getIP();
 
   private:

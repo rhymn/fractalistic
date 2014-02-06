@@ -49,15 +49,8 @@ void Network::setstat(int temp){
     _client.println();
   }
 
-  else{
-    _client.stop();
-    Serial.println("Stoppar klient.");
-  }
-
-  while(_client.available() > 0){
-    char in = _client.read();
-    Serial.println(in);
-  }
+  Serial.println("Kopplar fran.");
+  _client.stop();
 
   // Save state of connection
   _lastConn = _client.connected();
@@ -67,7 +60,7 @@ void Network::setstat(int temp){
 void Network::getsettings(){
   if(_client.connect(_server, 80)){
     Serial.println("Ansluten.");
-    _client.print("GET /getsettings HTTP/1.1");
+    _client.println("GET /getsettings HTTP/1.1");
     _client.println("Host: r.pnd.se");
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
@@ -79,13 +72,28 @@ void Network::getsettings(){
     Serial.println("Stoppar klient.");
   }
 
+  delay(3000);
+
   while(_client.available() > 0){
     char in = _client.read();
-    Serial.println(in);
+    Serial.print(in);
+
+    /*
+    if(in == "{"){
+
+    }
+    */
+
   }
+
+  Serial.println();
+  Serial.println("slutar lasa.");
+
+  _client.stop();
 
   // Save state of connection
   _lastConn = _client.connected();
+
 }
 
 

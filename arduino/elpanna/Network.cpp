@@ -2,11 +2,9 @@
 #include "Network.h"
 
 
-Network::Network(byte mac[], IPAddress ip, IPAddress dns, char server[])
- : _ip(ip), _dns(dns) 
+Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[])
+ : _ip(ip), _myDns(myDns) 
 {
-  delay(1000);
-
   _mac = mac;
   _server = server;
 
@@ -16,7 +14,7 @@ Network::Network(byte mac[], IPAddress ip, IPAddress dns, char server[])
   EthernetClient _client;
 
   // Start ethernet connection
-  Ethernet.begin(mac, ip, dns);
+  Ethernet.begin(mac, ip, myDns);
 }
 
 void Network::manageConn(){
@@ -28,7 +26,7 @@ void Network::manageConn(){
 
 void Network::request(){
   if(_client.connect(_server, 80)){
-    _client.println("GET /getsettings HTTP/1.1");
+    _client.println("GET /setstat HTTP/1.1");
     _client.println("Host: r.pnd.se");
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");

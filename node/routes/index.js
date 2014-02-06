@@ -89,7 +89,7 @@ exports.setstat = function(req, res){
   var mode = 'home';
 
   mongo.Db.connect(url, function (err, db) {
-    db.collection('settings', function(er, collection) {
+    db.collection('stat', function(er, collection) {
       collection.update({key:1}, {$set:{'mode': mode, 'date': date, 'temp': temp}}, {safe: true}, function(er,rs) {
       });
     });

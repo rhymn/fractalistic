@@ -84,11 +84,13 @@ exports.getstat = function(req, res){
 exports.setstat = function(req, res){
   var date = new Date();
 
+  var temp = req.params.temp;
+
   var mode = 'home';
 
   mongo.Db.connect(url, function (err, db) {
     db.collection('settings', function(er, collection) {
-      collection.update({key:1}, {$set:{'mode': mode, 'date': date}}, {safe: true}, function(er,rs) {
+      collection.update({key:1}, {$set:{'mode': mode, 'date': date, 'temp': temp}}, {safe: true}, function(er,rs) {
       });
     });
   });

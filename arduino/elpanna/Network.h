@@ -4,21 +4,26 @@
   Released into the public domain.
 */
 
+#include <SPI.h>
+#include <Ethernet.h>
+
 #ifndef Network_h
 #define Network_h
 
 class Network{
   public:
-    Network();
+    Network(byte mac[], IPAddress ip, IPAddress dns, char server[]);
     void manageConn();
     void request();
+    IPAddress getIP();
 
   private:
     boolean _lastConn;
-    byte _mac[];
+    byte *_mac;
     IPAddress _ip;
     IPAddress _dns;
-    Client _client;
+    char *_server;
+    EthernetClient _client;
 };
 
 #endif

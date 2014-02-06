@@ -3,6 +3,10 @@
 #include <Elpanna.h>
 #include <PID.h>
 
+#include <SPI.h>
+#include <Ethernet.h>
+#include <Network.h>
+
 /**
  * Ett enkelt reglerprogram för att styra en panna
  * - ett börvärde ska hållas så bra som möjligt
@@ -29,8 +33,19 @@ const float Kp = 3,
             Ki = 0.8, 
             Kd = 1;
 
+const unsigned long postingInterval = 60 * 1000; // 1 minute
+
 Elpanna elpanna(60, 12, 13, A0);
 PID pid(Kp, Ki, Kd);
+
+/*
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
+IPAddress ip(192.168.0.167);
+IPAddress dns(1,1,1,1);
+char server[] = "r.pnd.se";
+
+Network network(mac, ip, dns, server);
+*/
 
 void setup(){
 
@@ -112,6 +127,13 @@ void loop(){
     digitalWrite(okLED, HIGH);
   }
 
+/*
+  network.manageConn();
+
+  if(millis() - lastConnTime > postingInterval){
+    network.request();
+  }
+*/
   delay(10000);
 }
 

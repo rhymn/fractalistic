@@ -33,7 +33,8 @@ const float Kp = 3,
             Ki = 0.8, 
             Kd = 1;
 
-const unsigned long postingInterval = 60 * 1000; // 1 minute
+const unsigned long postingInterval = 30 * 1000;
+unsigned long lastConnTime = 0;
 
 Elpanna elpanna(60, 12, 13, A0);
 PID pid(Kp, Ki, Kd);
@@ -42,6 +43,8 @@ byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 0, 167);
 IPAddress myDns(192, 168, 2, 1);
 char server[] = "r.pnd.se";
+
+Network network(mac, ip, myDns, server);
 
 void setup(){
 
@@ -79,8 +82,9 @@ void setup(){
   Serial.print("Tid; Output (0-200); Ref; R; T; lastInput; lastError; lastOutput; p; i; d;");
   Serial.println();
 
-  Network network(mac, ip, myDns, server);
+  network.begin();
 
+  Serial.print("IP: ");
   Serial.print(network.getIP());
   Serial.println();
 }
@@ -127,13 +131,14 @@ void loop(){
     digitalWrite(okLED, HIGH);
   }
 
-/*
   network.manageConn();
 
   if(millis() - lastConnTime > postingInterval){
     network.request();
+
+    lastConnTime = millis();
   }
-*/
+
   delay(10000);
 }
 

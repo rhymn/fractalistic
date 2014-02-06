@@ -12,9 +12,11 @@ Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[])
 
   // Init instance
   EthernetClient _client;
+}
 
+void Network::begin(){
   // Start ethernet connection
-  Ethernet.begin(mac, ip, myDns);
+  Ethernet.begin(_mac, _ip, _myDns);
 }
 
 void Network::manageConn(){

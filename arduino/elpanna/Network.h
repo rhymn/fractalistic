@@ -13,6 +13,7 @@
 class Network{
   public:
     Network(byte mac[], IPAddress ip, IPAddress myDns, char server[]);
+    void begin();
     void manageConn();
     void request();
     IPAddress getIP();

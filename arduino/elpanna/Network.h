@@ -12,7 +12,7 @@
 
 class Network{
   public:
-    Network(byte mac[], IPAddress ip, IPAddress myDns, char server[]);
+    Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port);
     void begin();
     void manageConn();
     void setstat(int temp);
@@ -25,6 +25,7 @@ class Network{
     IPAddress _ip;
     IPAddress _myDns;
     char *_server;
+    int _port;
     EthernetClient _client;
 };
 

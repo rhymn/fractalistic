@@ -1,12 +1,14 @@
 #include "Arduino.h"
 #include "Network.h"
+#include "aJSON.h"
 
 
-Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[])
+Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port)
  : _ip(ip), _myDns(myDns) 
 {
   _mac = mac;
   _server = server;
+  _port = port;
 
   _lastConn = false;
 
@@ -38,7 +40,7 @@ void Network::manageConn(){
 
 
 void Network::setstat(int temp){
-  if(_client.connect(_server, 3000)){
+  if(_client.connect(_server, _port)){
     delay(1000);
     Serial.println("Ansluten.");
     _client.print("GET /setstat/temp/");
@@ -67,11 +69,12 @@ void Network::setstat(int temp){
 void Network::getsettings(){
   boolean loop = true;
   boolean isJson = false;
-  String jsonStr = "";
+  char jsonStr[] = "";
+  int c = 0;
 
   _client.flush();
 
-  if(_client.connect(_server, 3000)){
+  if(_client.connect(_server, _port)){
     Serial.println("Ansluten.");
     _client.println("GET /getsettings HTTP/1.1");
 
@@ -100,7 +103,7 @@ void Network::getsettings(){
       }
 
       if(isJson){
-        jsonStr += in;
+        jsonStr[c++] = in;
       }
 
       if(in == '}'){
@@ -114,11 +117,18 @@ void Network::getsettings(){
     }
   }
 
-  Serial.println(jsonStr);
-  Serial.println();
-  delay(200);
-
   _client.stop();
+
+  Serial.println(jsonStr);
+
+/*
+  aJsonObject* jsonObject = aJson.parse(jsonStr);
+  aJsonObject* mode = aJson.getObjectItem(jsonObject, "mode");
+
+  Serial.println(mode->valuestring);
+
+  aJson.deleteItem(jsonObject);
+*/
 
   // Save state of connection
   _lastConn = _client.connected();

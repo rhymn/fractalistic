@@ -42,9 +42,10 @@ PID pid(Kp, Ki, Kd);
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 2, 9);
 IPAddress myDns(195, 67, 199, 27);
-char server[] = "192.168.1.101";
+char server[] = "192.168.2.1";
+int port = 3000;
 
-Network network(mac, ip, myDns, server);
+Network network(mac, ip, myDns, server, port);
 
 void setup(){
 
@@ -63,7 +64,9 @@ void setup(){
   
   Serial.begin(9600);
 
-  Serial.print("Startar styrprogram och testar effektlagen pa relaer...");
+  Serial.println(millis());
+
+  // Serial.print("Startar styrprogram och testar effektlagen pa relaer...");
 
   // Kör igenom alla dioder och relän för att kolla så allt är rätt kopplat.
   int i;
@@ -72,9 +75,10 @@ void setup(){
     delay(750);
   }
 
-  Serial.println("OK");
+  // Serial.println("OK");
 
   // Print headers
+  /*
   Serial.print("Kp, Ki, Kd: ");
   Serial.print(Kp); Serial.print(Ki); Serial.print(Kd);
   Serial.println();
@@ -82,11 +86,16 @@ void setup(){
   Serial.print("Tid; Output (0-200); Ref; R; T; lastInput; lastError; lastOutput; p; i; d;");
   Serial.println();
 
+  */
+
   network.begin();
+
+  /*
 
   Serial.print("IP: ");
   Serial.print(network.getIP());
   Serial.println();
+  */
 }
 
 
@@ -106,6 +115,7 @@ void loop(){
   
   elpanna.setEffect(outputRes, one, two, three, four, five, six);
   
+  /*
   Serial.print("<log>");
 
   Serial.print(pid.getLastMeasureTime());
@@ -119,6 +129,8 @@ void loop(){
   
   Serial.print("</log>");
   Serial.println();
+
+  */
 
   
   if(elpanna.isError()){
@@ -134,13 +146,14 @@ void loop(){
   network.manageConn();
 
   if(millis() - lastConnTime > postingInterval){
-    Serial.println("Nytt anrop");
     // network.setstat(elpanna.getTemp());
     // delay(2000);
     network.getsettings();
 
     lastConnTime = millis();
   }
+
+  Serial.flush();
 
   delay(10000);
 }

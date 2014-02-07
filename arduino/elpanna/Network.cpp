@@ -38,16 +38,23 @@ void Network::manageConn(){
 
 
 void Network::setstat(int temp){
-  if(_client.connect(_server, 80)){
+  if(_client.connect(_server, 3000)){
+    delay(1000);
     Serial.println("Ansluten.");
     _client.print("GET /setstat/temp/");
     _client.print(temp);
     _client.println(" HTTP/1.1");
-    _client.println("Host: r.pnd.se");
+
+    _client.print("Host: ");
+    _client.print(_server);
+    _client.println();
+
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
     _client.println();
   }
+
+  delay(1000);
 
   Serial.println("Kopplar fran.");
   _client.stop();
@@ -58,10 +65,20 @@ void Network::setstat(int temp){
 
 
 void Network::getsettings(){
-  if(_client.connect(_server, 80)){
+  boolean loop = true;
+  boolean isJson = false;
+  String jsonStr = "";
+
+  _client.flush();
+
+  if(_client.connect(_server, 3000)){
     Serial.println("Ansluten.");
     _client.println("GET /getsettings HTTP/1.1");
-    _client.println("Host: r.pnd.se");
+
+    _client.print("Host: ");
+    _client.print(_server);
+    _client.println();
+
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
     _client.println();
@@ -72,22 +89,34 @@ void Network::getsettings(){
     Serial.println("Stoppar klient.");
   }
 
-  delay(3000);
+  delay(1000);
 
-  while(_client.available() > 0){
-    char in = _client.read();
-    Serial.print(in);
+  while(loop){
+    if(_client.available()){
+      char in = _client.read();
 
-    /*
-    if(in == "{"){
+      if(in == '{'){
+        isJson = true;
+      }
+
+      if(isJson){
+        jsonStr += in;
+      }
+
+      if(in == '}'){
+        isJson = false;
+      }
 
     }
-    */
 
+    if(!_client.available() && !_client.connected()){
+      loop = false;
+    }
   }
 
+  Serial.println(jsonStr);
   Serial.println();
-  Serial.println("slutar lasa.");
+  delay(200);
 
   _client.stop();
 

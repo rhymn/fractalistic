@@ -13,6 +13,7 @@ class Elpanna{
   public:
     Elpanna(int desiredTemp, int okLED, int errLED, int thermistorPin);
     int getDesiredTemp();
+    void setDesiredTemp(int desiredTemp);
     int getTemp();
     void measure();
     void printState();

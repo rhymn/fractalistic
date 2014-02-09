@@ -34,8 +34,7 @@ build-cli/Network.o: Network.cpp \
  /usr/share/arduino/libraries/Ethernet/Dhcp.h \
  /usr/share/arduino/libraries/Ethernet/EthernetUdp.h \
  /usr/share/arduino/hardware/arduino/cores/arduino/Udp.h \
- /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h \
- /usr/share/arduino/libraries/aJson/aJSON.h
+ /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h
 build-cli/PID.o: PID.cpp \
  /usr/share/arduino/hardware/arduino/cores/arduino/Arduino.h \
  /usr/share/arduino/hardware/arduino/cores/arduino/binary.h \

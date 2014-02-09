@@ -15,9 +15,10 @@ class Network{
     Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port);
     void begin();
     void manageConn();
-    void setstat(int temp);
-    void getsettings();
+    void setstat(int temp, String mode);
+    String getsettings();
     IPAddress getIP();
+    static String parseJson(String jsonStr, String key);
 
   private:
     boolean _lastConn;

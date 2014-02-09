@@ -32,6 +32,11 @@ Elpanna::Elpanna(int desiredTemp, int okLED, int errLED, int thermistorPin){
 }
 
 
+void Elpanna::setDesiredTemp(int desiredTemp){
+	_desiredTemp = desiredTemp;
+}
+
+
 int Elpanna::getDesiredTemp(){
 	return _desiredTemp;
 }

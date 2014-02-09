@@ -41,8 +41,8 @@ PID pid(Kp, Ki, Kd);
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 2, 9);
 IPAddress myDns(195, 67, 199, 27);
-char server[] = "192.168.2.1";
-int port = 3000;
+char server[] = "r.pnd.se";
+int port = 80;
 
 Network network(mac, ip, myDns, server, port);
 
@@ -104,6 +104,8 @@ void loop(){
   elpanna.measure();
   int temp = elpanna.getTemp();
   float setPoint = float(elpanna.getDesiredTemp());
+
+  Serial.println(setPoint);
     
   output = pid.compute(temp, setPoint);
   
@@ -143,14 +145,28 @@ void loop(){
   network.manageConn();
 
   if(millis() - lastConnTime > postingInterval){
-    // network.setstat(elpanna.getTemp());
-    // delay(2000);
-    network.getsettings();
+    String settings = network.getsettings();
+
+    String mode = Network::parseJson(settings, "mode");
+
+    if(mode == "home"){
+      elpanna.setDesiredTemp(60);
+      Serial.println("Setting temp to 60");
+    }
+    else if(mode == "away"){
+      elpanna.setDesiredTemp(30);
+      Serial.println("Setting temp to 30");
+    }
+    else{
+      mode = "home";
+    }
+
+    delay(200);
+    network.setstat(elpanna.getTemp(), mode);
+
 
     lastConnTime = millis();
   }
-
-  Serial.flush();
 
   delay(10000);
 }

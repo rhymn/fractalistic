@@ -1,6 +1,5 @@
 #include "Arduino.h"
 #include "Network.h"
-#include "aJSON.h"
 
 
 Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port)
@@ -19,12 +18,12 @@ Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int p
 void Network::begin(){
   // Start ethernet connection
   if(Ethernet.begin(_mac) == 1){
-    Serial.print("ip fran dhcp:)");
+   // Serial.print("ip fran dhcp:)");
     Serial.println();
   }
 
   else{
-    Serial.print("dhcp svarar ej. Satter statisk ip.");
+    // Serial.print("dhcp svarar ej. Satter statisk ip.");
     Serial.println();
     Ethernet.begin(_mac, _ip, _myDns);
   }
@@ -39,12 +38,14 @@ void Network::manageConn(){
 }
 
 
-void Network::setstat(int temp){
+void Network::setstat(int temp, String mode){
   if(_client.connect(_server, _port)){
-    delay(1000);
-    Serial.println("Ansluten.");
+    delay(200);
+    // Serial.println("Ansluten.");
     _client.print("GET /setstat/temp/");
     _client.print(temp);
+    _client.print("/mode/");
+    _client.print(mode);
     _client.println(" HTTP/1.1");
 
     _client.print("Host: ");
@@ -56,9 +57,8 @@ void Network::setstat(int temp){
     _client.println();
   }
 
-  delay(1000);
+  delay(200);
 
-  Serial.println("Kopplar fran.");
   _client.stop();
 
   // Save state of connection
@@ -66,16 +66,16 @@ void Network::setstat(int temp){
 }
 
 
-void Network::getsettings(){
+String Network::getsettings(){
   boolean loop = true;
   boolean isJson = false;
-  char jsonStr[] = "";
-  int c = 0;
+  String jsonStr = "";
+  String mode = "";
 
   _client.flush();
 
   if(_client.connect(_server, _port)){
-    Serial.println("Ansluten.");
+    // Serial.println("Ansluten.");
     _client.println("GET /getsettings HTTP/1.1");
 
     _client.print("Host: ");
@@ -89,11 +89,13 @@ void Network::getsettings(){
 
   else{
     _client.stop();
-    Serial.println("Stoppar klient.");
+    // Serial.println("Stoppar klient.");
+    return false;
   }
 
   delay(1000);
 
+  loop = true;
   while(loop){
     if(_client.available()){
       char in = _client.read();
@@ -103,7 +105,7 @@ void Network::getsettings(){
       }
 
       if(isJson){
-        jsonStr[c++] = in;
+        jsonStr += in;
       }
 
       if(in == '}'){
@@ -119,23 +121,24 @@ void Network::getsettings(){
 
   _client.stop();
 
-  Serial.println(jsonStr);
-
-/*
-  aJsonObject* jsonObject = aJson.parse(jsonStr);
-  aJsonObject* mode = aJson.getObjectItem(jsonObject, "mode");
-
-  Serial.println(mode->valuestring);
-
-  aJson.deleteItem(jsonObject);
-*/
-
   // Save state of connection
   _lastConn = _client.connected();
 
+  return jsonStr;
 }
 
 
+String Network::parseJson(String jsonStr, String key){
+  int kStart = jsonStr.indexOf(key);
+  int divider = jsonStr.indexOf(":", kStart + 4);
+  int vStart = jsonStr.indexOf("\"", divider) + 1;
+
+  int vEnd = jsonStr.indexOf("\"", vStart) + 1;
+
+  String value = jsonStr.substring(vStart, vEnd - 1);
+
+  return value;
+}
 
 
 

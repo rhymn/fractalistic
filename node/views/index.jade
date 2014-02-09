@@ -10,7 +10,9 @@ block content
 	div.container
 		div.row
 			div.col-xs-6
-				p.lead Temperaturen är inställd på 60.0 grader
+				p.lead
+					span Pannan är inställd på 
+					span#mode(style="font-weight: bold;")
 
 			div.col-xs-6
 				div.btn-group(data-toggle='buttons')
@@ -88,6 +90,7 @@ block content
 				dataType: 'json',
 			}).done(function(data){
 				$('#water-temp').html(data.temp);
+				$('#mode').html(data.mode);
 			});
 
 		});

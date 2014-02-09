@@ -85,8 +85,7 @@ exports.setstat = function(req, res){
   var date = new Date();
 
   var temp = req.params.temp;
-
-  var mode = 'home';
+  var mode = req.params.mode;
 
   mongo.Db.connect(url, function (err, db) {
     db.collection('stat', function(er, collection) {

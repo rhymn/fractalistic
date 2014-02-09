@@ -40,8 +40,8 @@ void Network::manageConn(){
 
 void Network::setstat(int temp, String mode){
   if(_client.connect(_server, _port)){
-    delay(200);
-    // Serial.println("Ansluten.");
+    delay(500);
+    Serial.println("setstat(): Ansluten.");
     _client.print("GET /setstat/temp/");
     _client.print(temp);
     _client.print("/mode/");
@@ -75,7 +75,8 @@ String Network::getsettings(){
   _client.flush();
 
   if(_client.connect(_server, _port)){
-    // Serial.println("Ansluten.");
+    delay(500);
+    Serial.println("getsettings(): Ansluten.");
     _client.println("GET /getsettings HTTP/1.1");
 
     _client.print("Host: ");
@@ -89,7 +90,7 @@ String Network::getsettings(){
 
   else{
     _client.stop();
-    // Serial.println("Stoppar klient.");
+    Serial.println("getsetttings(): Kan inte ansluta.");
     return false;
   }
 

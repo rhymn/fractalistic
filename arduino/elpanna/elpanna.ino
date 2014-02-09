@@ -17,8 +17,8 @@
  *
  */
 
-const int okLED = 12;
-const int errLED = 13; 
+const int okLED = 8; // was 12
+const int errLED = 9; // was 13
 
 // TODO: Bättre namn på dessa :)
 const int one = 6;
@@ -32,7 +32,7 @@ const float Kp = 3,
             Ki = 0.8, 
             Kd = 1;
 
-const unsigned long postingInterval = 15 * 1000; // 1 minute for testing => 5min => 10min
+const unsigned long postingInterval = 30 * 1000; // 1 minute for testing => 5min => 10min
 unsigned long lastConnTime = 0;
 
 Elpanna elpanna(60, 12, 13, A0);
@@ -63,7 +63,7 @@ void setup(){
   
   Serial.begin(9600);
 
-  // Serial.print("Startar styrprogram och testar effektlagen pa relaer...");
+  Serial.print("Startar styrprogram och testar effektlagen pa relaer...");
 
   // Kör igenom alla dioder och relän för att kolla så allt är rätt kopplat.
   int i;
@@ -72,10 +72,9 @@ void setup(){
     delay(750);
   }
 
-  // Serial.println("OK");
+  Serial.println("OK");
 
   // Print headers
-  /*
   Serial.print("Kp, Ki, Kd: ");
   Serial.print(Kp); Serial.print(Ki); Serial.print(Kd);
   Serial.println();
@@ -83,7 +82,6 @@ void setup(){
   Serial.print("Tid; Output (0-200); Ref; R; T; lastInput; lastError; lastOutput; p; i; d;");
   Serial.println();
 
-  */
 
   network.begin();
 
@@ -114,7 +112,7 @@ void loop(){
   
   elpanna.setEffect(outputRes, one, two, three, four, five, six);
   
-  /*
+
   Serial.print("<log>");
 
   Serial.print(pid.getLastMeasureTime());
@@ -128,8 +126,6 @@ void loop(){
   
   Serial.print("</log>");
   Serial.println();
-
-  */
 
   
   if(elpanna.isError()){
@@ -149,6 +145,9 @@ void loop(){
 
     String mode = Network::parseJson(settings, "mode");
 
+    Serial.println("settings: ");
+    Serial.println(settings);
+
     if(mode == "home"){
       elpanna.setDesiredTemp(60);
       Serial.println("Setting temp to 60");
@@ -163,7 +162,6 @@ void loop(){
 
     delay(200);
     network.setstat(elpanna.getTemp(), mode);
-
 
     lastConnTime = millis();
   }

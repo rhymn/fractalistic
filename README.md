@@ -21,11 +21,15 @@ hosted at Heroku, Mongodb at MongoHQ
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.
 "avrdude: stk500_recv(): programmer is not responding" this is likely because you've choosen the wrong Serial port. My default ports for the RPi are stated in read.py
 
+In Raspbian the Arduino shows up as /dev/ttyACM0
+
 ### todo
-1. Temperature runtime adjustment
+1. Temperature runtime adjustment (Done)
 2. Outside temperature measure
 3. Inside temperature measure
 4. Radiator / water pump control (on/off)
+5. Refactor arduino c++ code
+6. Finish and merge "tempClass" branch to master
 
 ### More
 http://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection

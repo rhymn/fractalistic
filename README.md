@@ -23,13 +23,21 @@ hosted at Heroku, Mongodb at MongoHQ
 
 In Raspbian the Arduino shows up as /dev/ttyACM0
 
+```
+sudo make clean
+sudo make
+sudo make upload
+sudo cat /dev/ttyACM0
+```
+
 ### todo
-1. Temperature runtime adjustment (Done)
-2. Outside temperature measure
-3. Inside temperature measure
-4. Radiator / water pump control (on/off)
-5. Refactor arduino c++ code
-6. Finish and merge "tempClass" branch to master
+* Temperature runtime adjustment (Done)
+* Outside temperature measure
+* Inside temperature measure
+* Radiator / water pump control (on/off)
+* Refactor arduino c++ code
+* Finish and merge "tempClass" branch to master
+* python script on the raspberry for simplifying compilation, deployment and debugging
 
 ### More
 http://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection

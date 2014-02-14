@@ -18,8 +18,8 @@ Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int p
 void Network::begin(){
   // Start ethernet connection
   if(Ethernet.begin(_mac) == 1){
-   // Serial.print("ip fran dhcp:)");
-    Serial.println();
+    Serial.println("ip fran dhcp.");
+    Serial.println(Network::getIP());
   }
 
   else{
@@ -38,14 +38,16 @@ void Network::manageConn(){
 }
 
 
-void Network::setstat(int temp, String mode){
+void Network::setstat(int temp, String mode, float output){
   if(_client.connect(_server, _port)){
-    delay(500);
     Serial.println("setstat(): Ansluten.");
+    delay(500);
     _client.print("GET /setstat/temp/");
     _client.print(temp);
     _client.print("/mode/");
     _client.print(mode);
+    _client.print("/output/");
+    _client.print(output);
     _client.println(" HTTP/1.1");
 
     _client.print("Host: ");
@@ -55,6 +57,11 @@ void Network::setstat(int temp, String mode){
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
     _client.println();
+  }
+
+  else{
+    // Try to obtain IP if this is the problem ..
+    Network::begin();
   }
 
   delay(200);
@@ -75,8 +82,8 @@ String Network::getsettings(){
   _client.flush();
 
   if(_client.connect(_server, _port)){
-    delay(500);
     Serial.println("getsettings(): Ansluten.");
+    delay(500);
     _client.println("GET /getsettings HTTP/1.1");
 
     _client.print("Host: ");
@@ -91,6 +98,9 @@ String Network::getsettings(){
   else{
     _client.stop();
     Serial.println("getsetttings(): Kan inte ansluta.");
+
+    // Try to obtain IP if this is the problem ..
+    Network::begin();
     return false;
   }
 

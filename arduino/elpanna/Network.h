@@ -15,7 +15,7 @@ class Network{
     Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port);
     void begin();
     void manageConn();
-    void setstat(int temp, String mode);
+    void setstat(int temp, String mode, float output);
     String getsettings();
     IPAddress getIP();
     static String parseJson(String jsonStr, String key);

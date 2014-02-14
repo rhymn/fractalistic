@@ -40,7 +40,7 @@ Elpanna elpanna(60, 12, 13, A0);
 PID pid(Kp, Ki, Kd);
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-IPAddress ip(192, 168, 2, 9);
+IPAddress ip(192, 168, 1, 50);
 IPAddress myDns(195, 67, 199, 27);
 char server[] = "r.pnd.se";
 int port = 80;
@@ -162,7 +162,7 @@ void loop(){
     }
 
     delay(200);
-    network.setstat(elpanna.getTemp(), mode);
+    network.setstat(elpanna.getTemp(), mode, output);
 
     lastConnTime = millis();
   }

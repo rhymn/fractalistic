@@ -38,6 +38,13 @@ block content
 					span Vindhastighet: 
 					span#wind-speed
 
+		div.row
+			div.col-xs-12
+				p.lead
+					span Effekt 
+					span#output
+					span  av 200
+
 	script.
 		$(function(){
 			$('#home').on('click', function(e){
@@ -91,6 +98,7 @@ block content
 			}).done(function(data){
 				$('#water-temp').html(data.temp);
 				$('#mode').html(data.mode);
+				$('#output').html(data.output);
 			});
 
 		});

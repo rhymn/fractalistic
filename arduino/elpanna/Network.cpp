@@ -38,7 +38,7 @@ void Network::manageConn(){
 }
 
 
-void Network::setstat(int temp, String mode, float output){
+void Network::setstat(int temp, String mode, float output, int outputRes){
   if(_client.connect(_server, _port)){
     Serial.println("setstat(): Ansluten.");
     delay(500);
@@ -48,6 +48,8 @@ void Network::setstat(int temp, String mode, float output){
     _client.print(mode);
     _client.print("/output/");
     _client.print(output);
+    _client.print("/outputRes/");
+    _client.print(outputRes);
     _client.println(" HTTP/1.1");
 
     _client.print("Host: ");

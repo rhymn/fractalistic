@@ -112,7 +112,6 @@ void loop(){
   outputRes = int((output + 10) * (9.0 / (pid.getOutputMax() - pid.getOutputMin())));
   
   elpanna.setEffect(outputRes, one, two, three, four, five, six);
-  
 
   Serial.print("<log>");
 
@@ -162,7 +161,7 @@ void loop(){
     }
 
     delay(200);
-    network.setstat(elpanna.getTemp(), mode, output);
+    network.setstat(elpanna.getTemp(), mode, output, outputRes);
 
     lastConnTime = millis();
   }

@@ -9,14 +9,9 @@ block content
 
 	div.container
 		div.row
-			div.col-xs-6
-				p.lead
-					span Pannan är inställd på 
-					span#mode(style="font-weight: bold;")
-
-			div.col-xs-6
+			div.col-xs-12
 				div.btn-group(data-toggle='buttons')
-					label.btn.fr-btn.active#home Hemma
+					label.btn.fr-btn#home Hemma
 						input(type='radio', disable="disable")
 					label.btn.fr-btn#away Borta
 						input(type='radio')
@@ -86,6 +81,12 @@ block content
 			$.ajax( {
 				url: '/getweatherdata', 
 				dataType: 'json',
+				beforeSend: function(){
+					$('#navigation').addClass('navbar-wait');
+				},
+				complete: function(){
+					$('#navigation').removeClass('navbar-wait');
+				}
 			}).done(function(data){
 				$('#outside-temp').html(data.t);
 				$('#wind-speed').html(data.ws);
@@ -97,7 +98,17 @@ block content
 				dataType: 'json',
 			}).done(function(data){
 				$('#water-temp').html(data.temp);
-				$('#mode').html(data.mode);
+
+				if(data.mode == 'home'){
+					$('#away').removeClass('active');
+					$('#home').addClass('active');
+				}
+
+				else{
+					$('#home').removeClass('active');
+					$('#away').addClass('active');
+				}
+
 				$('#output').html(data.output);
 			});
 

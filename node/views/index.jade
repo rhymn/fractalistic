@@ -38,7 +38,9 @@ block content
 				p.lead
 					span Effekt 
 					span#output
-					span  av 200
+					span  av 200 (
+					span#outputRes
+					span  kW)
 
 	script.
 		$(function(){
@@ -110,6 +112,7 @@ block content
 				}
 
 				$('#output').html(data.output);
+				$('#outputRes').html(data.outputRes);
 			});
 
 		});

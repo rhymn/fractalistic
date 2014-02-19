@@ -32,7 +32,7 @@ const float Kp = 3,
             Ki = 0.8, 
             Kd = 1;
 
-const unsigned long postingInterval = 30 * 1000; // 1 minute for testing => 5min => 10min
+const unsigned long postingInterval = 60 * 1000; // 1 minute for testing => 5min => 10min
 unsigned long lastConnTime = 0;
 
 Elpanna elpanna(60, 12, 13, A0);

@@ -20,7 +20,7 @@ exports.getweatherdata = function(req, res){
   var request = require('request');
 
   request({
-    'url': 'http://opendata-download-metfcst.smhi.se/api/category/pmp1g/version/1/geopoint/lat/57.26/lon/12.41/data.json',
+    'url': 'http://opendata-download-metfcst.smhi.se/api/category/pmp1.5g/version/1/geopoint/lat/57.26/lon/12.41/data.json',
     'json': true
 
   }, function(error, response, body){

@@ -42,6 +42,14 @@ block content
 					span#outputRes
 					span  kW)
 
+		div.row
+			div.col-xs-12
+				p.lead
+					span Senaste mätning  
+					span#last-measure
+
+
+
 	script.
 		$(function(){
 			$('#home').on('click', function(e){
@@ -113,6 +121,8 @@ block content
 
 				$('#output').html(data.output);
 				$('#outputRes').html(data.outputRes);
+
+				$('#last-measure').html(data.date);
 			});
 
 		});

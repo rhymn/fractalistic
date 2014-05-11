@@ -25,11 +25,24 @@ exports.getweatherdata = function(req, res){
 
   }, function(error, response, body){
 
-    if(!error && response.statusCode === 200){
+    if (!error && response.statusCode === 200) {
 
-      var weatherdata = body.timeseries[0];
+      var date = new Date();
+
+      var length = body.timeseries.length;
+
+      for (var i=1; i<length; i++) {
+        var time1 = body.timeseries[i-1]['validTime'];
+        var time2 = body.timeseries[i]['validTime'];
+
+        if (Date.parse(time1) < Date.parse(date) && Date.parse(time2) > Date.parse(date)) {
+          var weatherdata = body.timeseries[i];
+          break;
+        }
+      }
 
       res.send(weatherdata);
+
     }
 
   });

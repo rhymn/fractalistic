@@ -1,5 +1,5 @@
 # fractalistic
-A project for controlling a heater using Arduino over the Internet.
+Project for controlling a heater using Arduino over the Internet.
 
 ## Heater
 400V (3 Phase) electric heater.

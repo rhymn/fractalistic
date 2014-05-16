@@ -17,7 +17,6 @@ class Network{
     void manageConn();
     void setstat(int temp, String mode, float output, int outputRes);
     String getsettings();
-    IPAddress getIP();
     static String parseJson(String jsonStr, String key);
 
   private:

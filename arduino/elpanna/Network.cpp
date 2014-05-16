@@ -14,7 +14,7 @@ Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int p
 void Network::begin(){
   if (Ethernet.begin(_mac) == 1) {
     Serial.print("IP from DHCP: ");
-    Serial.println(Network::getIP());
+    Serial.println(Ethernet.localIP());
   } else{
     Ethernet.begin(_mac, _ip, _myDns);
   }
@@ -29,6 +29,10 @@ void Network::manageConn(){
 }
 
 
+/**
+ * @todo Use http POST instead of GET
+ *
+ */
 void Network::setstat(int temp, String mode, float output, int outputRes){
   if (_client.connect(_server, _port)) {
     Serial.print("Sending stats...");
@@ -144,12 +148,5 @@ String Network::parseJson(String jsonStr, String key){
   String value = jsonStr.substring(vStart, vEnd - 1);
 
   return value;
-}
-
-
-
-
-IPAddress Network::getIP(){
-  return Ethernet.localIP();
 }
 

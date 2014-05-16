@@ -29,9 +29,9 @@ const int four = 5;
 const int five = 2;
 const int six = 3;
 
-const float Kp = 3, 
-            Ki = 0.8, 
-            Kd = 1;
+const float Kp = 4, 
+            Ki = 0.6, 
+            Kd = 0.8;
 
 const unsigned long postingInterval = 60 * 1000; // 1 minute for testing => 5min => 10min
 unsigned long lastConnTime = 0;
@@ -42,7 +42,6 @@ PID pid(Kp, Ki, Kd);
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 1, 50);
 IPAddress myDns(195, 67, 199, 27);
-// char server[] = "r.pnd.se";
 int port = 80;
 
 Network network(mac, ip, myDns, server, port);
@@ -70,7 +69,7 @@ void setup(){
   int i;
   for(i = 1; i<11; i++){
     elpanna.setEffect(i, one, two, three, four, five, six);
-    delay(750);
+    delay(500);
   }
 
   Serial.println("OK");
@@ -83,15 +82,7 @@ void setup(){
   Serial.print("Tid; Output (0-200); Ref; R; T; lastInput; lastError; lastOutput; p; i; d;");
   Serial.println();
 
-
   network.begin();
-
-  /*
-
-  Serial.print("IP: ");
-  Serial.print(network.getIP());
-  Serial.println();
-  */
 }
 
 
@@ -166,7 +157,7 @@ void loop(){
     lastConnTime = millis();
   }
 
-  delay(10000);
+  delay(1000);
 }
 
 

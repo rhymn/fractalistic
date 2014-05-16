@@ -1,30 +1,21 @@
 #include "Arduino.h"
 #include "Network.h"
 
-
 Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int port)
  : _ip(ip), _myDns(myDns) 
 {
   _mac = mac;
   _server = server;
   _port = port;
-
   _lastConn = false;
-
-  // Init instance
   EthernetClient _client;
 }
 
 void Network::begin(){
-  // Start ethernet connection
-  if(Ethernet.begin(_mac) == 1){
-    Serial.println("ip fran dhcp.");
+  if (Ethernet.begin(_mac) == 1) {
+    Serial.print("IP from DHCP: ");
     Serial.println(Network::getIP());
-  }
-
-  else{
-    // Serial.print("dhcp svarar ej. Satter statisk ip.");
-    Serial.println();
+  } else{
     Ethernet.begin(_mac, _ip, _myDns);
   }
 
@@ -32,15 +23,15 @@ void Network::begin(){
 }
 
 void Network::manageConn(){
-  if(!_client.connected() && _lastConn){
+  if (!_client.connected() && _lastConn) {
     _client.stop();
   }
 }
 
 
 void Network::setstat(int temp, String mode, float output, int outputRes){
-  if(_client.connect(_server, _port)){
-    Serial.println("setstat(): Ansluten.");
+  if (_client.connect(_server, _port)) {
+    Serial.print("Sending stats...");
     delay(500);
     _client.print("GET /setstat/temp/");
     _client.print(temp);
@@ -56,12 +47,12 @@ void Network::setstat(int temp, String mode, float output, int outputRes){
     _client.print(_server);
     _client.println();
 
-    _client.println("User-Agent: ArduinoEthernet");
+    _client.println("User-Agent: Fractalistic");
     _client.println("Connection: close");
     _client.println();
-  }
 
-  else{
+    Serial.println("OK");
+  } else {
     // Try to obtain IP if this is the problem ..
     Network::begin();
   }
@@ -84,7 +75,7 @@ String Network::getsettings(){
   _client.flush();
 
   if(_client.connect(_server, _port)){
-    Serial.println("getsettings(): Ansluten.");
+    Serial.print("Receiving settings...");
     delay(500);
     _client.println("GET /getsettings HTTP/1.1");
 
@@ -95,11 +86,13 @@ String Network::getsettings(){
     _client.println("User-Agent: ArduinoEthernet");
     _client.println("Connection: close");
     _client.println();
+
+    Serial.println("OK");
   }
 
   else{
     _client.stop();
-    Serial.println("getsetttings(): Kan inte ansluta.");
+    // Serial.println("getsetttings(): Kan inte ansluta.");
 
     // Try to obtain IP if this is the problem ..
     Network::begin();

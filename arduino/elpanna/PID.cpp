@@ -49,11 +49,13 @@ float PID::compute(float input, float setPoint){
 
 	// Run every second minute	
 	if(timeD < 45){
-		Serial.println('PID: No computation.');
+		Serial.print("PID: No computation done");
+		Serial.println();
 		return _lastOutput;
 	}
 
-	Serial.println('PID: Computing new values..');
+	Serial.print("PID: Computing new values");
+	Serial.println();
 
 		
 	// Beräkna felet

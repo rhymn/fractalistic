@@ -71,4 +71,5 @@ build-cli/elpanna.o: build-cli/elpanna.cpp \
  /usr/share/arduino/libraries/Ethernet/Dhcp.h \
  /usr/share/arduino/libraries/Ethernet/EthernetUdp.h \
  /usr/share/arduino/hardware/arduino/cores/arduino/Udp.h \
- /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h Network.h
+ /usr/share/arduino/hardware/arduino/cores/arduino/Stream.h Network.h \
+ configuration.h

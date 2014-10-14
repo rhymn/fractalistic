@@ -30,6 +30,9 @@ sudo make upload
 sudo cat /dev/ttyACM0
 ```
 
+## Libraries
+Arduino libraries goes into /usr/share/arduino/libraries/
+
 ### todo
 * Temperature runtime adjustment (Done)
 * Outside temperature measure

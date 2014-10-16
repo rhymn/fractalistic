@@ -17,6 +17,8 @@ A simple Node.js webapp that can set temperature and display stats from the Ardu
 
 hosted at Heroku, Mongodb at MongoHQ
 
+## Raspbian
+
 ### uploading to Arduino
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.
 "avrdude: stk500_recv(): programmer is not responding" this is likely because you've choosen the wrong Serial port. My default ports for the RPi are stated in read.py
@@ -29,6 +31,9 @@ sudo make
 sudo make upload
 sudo cat /dev/ttyACM0
 ```
+
+### Libraries
+Arduino libraries goes into /usr/share/arduino/libraries/
 
 ### todo
 * Temperature runtime adjustment (Done)

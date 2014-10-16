@@ -17,7 +17,6 @@ class PID{
     float getOutputMax();
 
     float compute(float input, float setPoint);
-    void printState();
 
     long unsigned getLastMeasureTime();
 

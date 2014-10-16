@@ -43,8 +43,29 @@ int Elpanna::getDesiredTemp(){
 
 
 void Elpanna::measure(){
-	_res = Elpanna::getOhmFromThermistor();
+	int num = 5;
+
+	float measure[num];
+	float sum;
+
+	// Measure num times
+	for(int i = 0; i<num; i++){
+		measure[i] = Elpanna::getOhmFromThermistor();
+
+		// Wait 0.01 sec
+		delay(10);
+	}
+
+	// Calculate sum
+	for(int i = 0; i<num; i++){
+		sum += measure[i];
+	}
+
+	// Calculate average
+	_res = sum / num;
+
 	_temp = Elpanna::getTempFromRes( _res );
+
 	return;
 }
 
@@ -105,31 +126,6 @@ float Elpanna::getOhmFromThermistor(){
 bool Elpanna::isError(){
 	return _isErr;
 }
-
-void Elpanna::setEffect(int e, int one, int two, int three, int four, int five, int six){
-
-	// Each effect step has a binary equivalent for digitalWrite
-	byte pattern[] = {B000000, B100000, B101000, B101010, B011010, B010110, B010101, B110101, B111101, B111111};
-
-	digitalWrite(two, bitRead(pattern[e], 4)); digitalWrite(four, bitRead(pattern[e], 2)); digitalWrite(six, bitRead(pattern[e], 0));
-	digitalWrite(one, bitRead(pattern[e], 5)); digitalWrite(three, bitRead(pattern[e], 3)); digitalWrite(five, bitRead(pattern[e], 1));
-}
-
-void Elpanna::printState(){
-	Serial.print(_desiredTemp);
-	Serial.print("; ");
-
-	Serial.print(_res);
-	Serial.print("; ");
-
-	Serial.print(_temp);
-	Serial.print("; ");
-
-	return;
-}
-
-
-
 
 
 

@@ -53,10 +53,6 @@ float PID::compute(float input, float setPoint){
 		Serial.println();
 		return _lastOutput;
 	}
-
-	Serial.print("PID: Computing new values");
-	Serial.println();
-
 		
 	// Beräkna felet
 	error = setPoint - input;
@@ -78,11 +74,8 @@ float PID::compute(float input, float setPoint){
 
 	i = iTerm;
 	
-	// TODO: 	fixa vettig tid så att det blir en bra derivata,
-	// 			Och öka _kd för mer förutsägbarhet
-	
-	// Beräkna Derivata
-	d = (input - _lastInput);
+	// Beräkna Derivata dy/dx
+	d = (input - _lastInput) / timeD;
 	
 	output = (p * _kp) + (i * _ki) - (d * _kd);
 
@@ -103,35 +96,26 @@ float PID::compute(float input, float setPoint){
 	
 	_lastTime = now;
 
+	Serial.print("PID: New value: ");
+	Serial.print(output);
+	Serial.println();
+
+	Serial.print("PID: p=");
+	Serial.print(p * _kp);
+	Serial.print(" ");
+
+	Serial.print("i=");
+	Serial.print(i * _ki);
+	Serial.print(" ");
+
+	Serial.print("d=");
+	Serial.print(d * _kd);
+
+	Serial.println();
+
 	return output;
 }
 
 long unsigned PID::getLastMeasureTime(){
 	return _lastTime;
 }
-
-
-void PID::printState(){
-	Serial.print(_lastInput);
-	Serial.print("; ");
-
-	Serial.print(_lastError);
-	Serial.print("; ");
-
-	Serial.print(_lastOutput);
-	Serial.print("; ");
-
-	Serial.print(_lastP);
-	Serial.print("; ");
-
-	Serial.print(_lastI);
-	Serial.print("; ");
-
-	Serial.print(_lastD);
-	Serial.print("; ");
-
-	return;
-}
-
-
-

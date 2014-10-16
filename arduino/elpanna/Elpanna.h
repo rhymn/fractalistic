@@ -16,9 +16,7 @@ class Elpanna{
     void setDesiredTemp(int desiredTemp);
     int getTemp();
     void measure();
-    void printState();
     bool isError();
-    void setEffect(int output, int, int, int, int, int, int);
 
    private:
     int getTempFromRes(float r);

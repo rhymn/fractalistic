@@ -1,9 +1,20 @@
 #include <Elpanna.h>
+#include <Heater.h>
 #include <PID.h>
 #include <SPI.h>
 #include <Ethernet.h>
 #include <Network.h>
 #include <configuration.h>
+#include <plotly_streaming_ethernet.h>
+
+#define nTraces 4
+// View your tokens here: https://plot.ly/settings
+// Supply as many tokens as data traces
+// e.g. if you want to ploty A0 and A1 vs time, supply two tokens
+char *tokens[nTraces] = {"oz3o1opezg", "01lgfkoprd", "nyxtajecjy", "3g4703fkh6"};
+
+// arguments: username, api key, streaming token, filename
+plotly graph("rhymn", "98371gb3z5", tokens, "Elpannan", nTraces);
 
 /**
  * Fractalistic main
@@ -13,7 +24,6 @@
 const int okLED = 8;
 const int errLED = 9;
 
-// TODO: Better names
 const int one = 6;
 const int two = 7;
 const int three = 4;
@@ -21,9 +31,9 @@ const int four = 5;
 const int five = 2;
 const int six = 3;
 
-const float Kp = 5, 
-            Ki = 0.5, 
-            Kd = 0.5;
+const float Kp = 7, 
+            Ki = 0.4, 
+            Kd = 5;
 
 const bool debug = false;
 
@@ -31,6 +41,7 @@ const unsigned long postingInterval = 60000; // 1 minute
 unsigned long lastConnTime = 0;
 
 Elpanna elpanna(60, 12, 13, A0);
+Heater heater(one, two, three, four, five, six);
 PID pid(Kp, Ki, Kd);
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
@@ -39,6 +50,7 @@ IPAddress myDns(195, 67, 199, 27);
 
 Network network(mac, ip, myDns, server, port);
 
+// Arduino Setup
 void setup(){
 
   pinMode(2, OUTPUT);
@@ -65,21 +77,33 @@ void setup(){
     int i;
 
     for(i = 1; i<11; i++){
-      elpanna.setEffect(i, one, two, three, four, five, six);
+      heater.setEffect(i);
       delay(500);
     }
 
     Serial.println("OK");
   }
 
-  // Print headers
-  Serial.print("Tid; Output (0-200); Ref; R; T; lastInput; lastError; lastOutput; p; i; d;");
-  Serial.println();
-
   network.begin();
+
+  // graph.log_level = 4;
+  
+  // graph.timezone = "Europe/Stockholm";
+
+  // Extend graphs already created
+  // graph.fileopt = "extend";
+  
+  // graph.dry_run = true;
+  
+  // Initialize a streaming graph in your plotly account
+  // graph.init();
+
+  // Initialize plotly's streaming service
+  // graph.openStream(); 
 }
 
 
+// Arduino Main Loop
 void loop(){
   
   float output;
@@ -94,22 +118,14 @@ void loop(){
   // Convert to get resolution right
   outputRes = int((output + 10) * (9.0 / (pid.getOutputMax() - pid.getOutputMin())));
   
-  elpanna.setEffect(outputRes, one, two, three, four, five, six);
-
-  Serial.print("<log>");
-
-  Serial.print(pid.getLastMeasureTime());
-  Serial.print("; ");
-
-  Serial.print(output);
-  Serial.print("; ");
-
-  elpanna.printState();
-  pid.printState();
+  heater.setEffect(outputRes);
   
-  Serial.print("</log>");
-  Serial.println();
-
+  /*
+  graph.plot(millis(), output, tokens[0]);
+  graph.plot(millis(), outputRes, tokens[1]);
+  graph.plot(millis(), temp, tokens[2]);
+  graph.plot(millis(), setPoint, tokens[3]);  
+  */
   
   if(elpanna.isError()){
     digitalWrite(errLED, HIGH);
@@ -143,6 +159,7 @@ void loop(){
 
     lastConnTime = millis();
   }
+
 
   delay(10000);
 }

@@ -1,5 +1,5 @@
-# fractalistic
-Project for controlling a heater using Arduino over the Internet.
+# Fractalistic
+Remote Heater Control
 
 ![](https://github.com/rhymn/fractalistic/blob/master/fritzing/screenshots/Elpanna_breadboard.png)
 

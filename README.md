@@ -5,19 +5,26 @@ Remote Heater Control
 
 ![](https://github.com/rhymn/fractalistic/blob/master/extra/fritzing.png)
 
-## Heater
+## Components
+
+### Heater
 400V (3 Phase) electric heater.
 
-## Arduino Uno
+### Arduino Uno
 PID Regulator controlling temperature with 6 relays in 9 steps
 
 Arduino client checks for changes and sends stats using the API every 5 minutes.
 
-## Arduino Ethernet Adapter
+### Arduino Ethernet Adapter
 Interface with the Internet
 
-## API and Webapp
-A simple Node.js webapp that can set temperature and display stats from the Arduino
+### Software
+
+#### Arduino PID Regulator and Network adapter
+C++
+
+#### Webapp
+A Node.js webapp that can set temperature and display stats from the Arduino
 
 hosted at Heroku, Mongodb at MongoHQ
 

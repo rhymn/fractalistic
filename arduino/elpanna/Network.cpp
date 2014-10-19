@@ -12,12 +12,16 @@ Network::Network(byte mac[], IPAddress ip, IPAddress myDns, char server[], int p
 }
 
 void Network::begin(){
+  // Serial.println("DHCP...");
+
   if (Ethernet.begin(_mac) == 1) {
-    Serial.print("IP from DHCP: ");
-    Serial.println(Ethernet.localIP());
+    // Serial.print("from dhcp...");
   } else{
     Ethernet.begin(_mac, _ip, _myDns);
+    // Serial.print("statically...");
   }
+
+  // Serial.println(Ethernet.localIP());
 
   delay(1000);
 }
@@ -34,8 +38,11 @@ void Network::manageConn(){
  *
  */
 void Network::setstat(int temp, String mode, float output, int outputRes){
+  // Serial.print("Connecting...");
   if (_client.connect(_server, _port)) {
-    Serial.print("Sending stats...");
+    // Serial.println("OK");
+
+    // Serial.print("Sending stats...");
     delay(500);
     _client.print("GET /setstat/temp/");
     _client.print(temp);
@@ -55,15 +62,15 @@ void Network::setstat(int temp, String mode, float output, int outputRes){
     _client.println("Connection: close");
     _client.println();
 
-    Serial.println("OK");
+    // Serial.println("OK");
+
+    delay(200);
+    _client.stop();
   } else {
     // Try to obtain IP if this is the problem ..
+    // Serial.println("Fail");
     Network::begin();
   }
-
-  delay(200);
-
-  _client.stop();
 
   // Save state of connection
   _lastConn = _client.connected();
@@ -79,7 +86,7 @@ String Network::getsettings(){
   _client.flush();
 
   if(_client.connect(_server, _port)){
-    Serial.print("Receiving settings...");
+    // Serial.print("Receiving settings...");
     delay(500);
     _client.println("GET /getsettings HTTP/1.1");
 
@@ -91,7 +98,7 @@ String Network::getsettings(){
     _client.println("Connection: close");
     _client.println();
 
-    Serial.println("OK");
+    // Serial.println("OK");
   }
 
   else{

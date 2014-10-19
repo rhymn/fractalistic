@@ -1,6 +1,8 @@
 # Fractalistic
 Remote Heater Control
 
+![](https://github.com/rhymn/fractalistic/blob/master/extra/elpanna.jpg)
+
 ![](https://github.com/rhymn/fractalistic/blob/master/extra/fritzing.png)
 
 ## Heater

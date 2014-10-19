@@ -1,17 +1,11 @@
 #include "Arduino.h"
 #include "Temp.h"
 
-
-/**
- * Constructor
- *
- */
 Temp::Temp(int thermistorPin){
 	_res = 0;
 	_temp = 0;
 	_thermistorPin = thermistorPin;
 }
-
 
 void Temp::measure(){
 	int num = 10;
@@ -35,7 +29,11 @@ void Temp::measure(){
 	// Calculate average
 	_res = sum / num;
 
+
 	_temp = Temp::getTempFromRes( _res );
+
+	// Serial.print("Temp: ");
+	// Serial.println(_temp);
 
 	return;
 }
@@ -94,4 +92,6 @@ float Temp::getOhmFromThermistor(){
   return r;
 }
 
-
+bool Temp::isError(){
+	return _isErr;
+}

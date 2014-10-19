@@ -1,13 +1,14 @@
-#ifndef Elpanna_h
-#define Elpanna_h
+#ifndef Temp_h
+#define Temp_h
 
 #include "Arduino.h"
 
-class Elpanna{
+class Temp{
   public:
-    Elpanna(int thermistorPin);
+    Temp(int thermistorPin);
     int getTemp();
     void measure();
+    bool isError();
 
    private:
     int getTempFromRes(float r);
@@ -17,6 +18,8 @@ class Elpanna{
 
     int _temp;
     float _res;
+
+    bool _isErr;
 };
 
 #endif

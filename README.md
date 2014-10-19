@@ -46,7 +46,7 @@ sudo cat /dev/ttyACM0
 ### Libraries
 Arduino libraries goes into /usr/share/arduino/libraries/
 
-#### Dhcp.h
+#### Ethernet/Dhcp.h
 To prevent unwanted behaviour an adjustment to Dhcp.h must be made. If no ethernet connection is available the timeout is too long, this is adjusted to a few seconds with the following line:
 
 ```

@@ -1,6 +1,8 @@
 # fractalistic
 Project for controlling a heater using Arduino over the Internet.
 
+![](https://github.com/rhymn/fractalistic/fritzing/screenshots/Elpanna_breadboard.png)
+
 ## Heater
 400V (3 Phase) electric heater.
 

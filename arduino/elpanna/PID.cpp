@@ -12,7 +12,7 @@ PID::PID(float kp, float ki, float kd){
 	_ki = ki;
 	_kd = kd;
 	
-	_lastTime = millis();
+	_lastTime = -100000;
 }
 
 void PID::setOutputMax(float max){
@@ -49,8 +49,6 @@ float PID::compute(float input, float setPoint){
 
 	// Run every second minute	
 	if(timeD < 45){
-		Serial.print("PID: No computation done");
-		Serial.println();
 		return _lastOutput;
 	}
 		
@@ -63,7 +61,7 @@ float PID::compute(float input, float setPoint){
 	// Beräkna Integral
 	// Addera aktuellt fel till summan för att få ytan under kurvan
 	// iTerm = _ki * timeD * (error + iTerm);
-	iTerm += error;
+	iTerm += timeD * 0.1 * error;
 	
 	if(iTerm > _outMax){
 		iTerm = _outMax;
@@ -96,6 +94,7 @@ float PID::compute(float input, float setPoint){
 	
 	_lastTime = now;
 
+/*
 	Serial.print("PID: New value: ");
 	Serial.print(output);
 	Serial.println();
@@ -112,6 +111,7 @@ float PID::compute(float input, float setPoint){
 	Serial.print(d * _kd);
 
 	Serial.println();
+*/
 
 	return output;
 }

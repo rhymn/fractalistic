@@ -1,7 +1,7 @@
 # Fractalistic
 Remote Heater Control
 
-![](https://github.com/rhymn/fractalistic/blob/master/fritzing/screenshots/Elpanna_breadboard.png)
+![](https://github.com/rhymn/fractalistic/blob/master/extra/fritzing.png)
 
 ## Heater
 400V (3 Phase) electric heater.

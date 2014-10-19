@@ -47,17 +47,20 @@ sudo cat /dev/ttyACM0
 Arduino libraries goes into /usr/share/arduino/libraries/
 
 #### Dhcp.h
-To prevent unwanted behaviour an adjustment to Dhcp.h must be made. If no ethernet connection is available the timeout is too long (1 minute), this is adjusted to a few seconds with the following line:
+To prevent unwanted behaviour an adjustment to Dhcp.h must be made. If no ethernet connection is available the timeout is too long, this is adjusted to a few seconds with the following line:
 
+```
+int beginWithDHCP(uint8_t *, unsigned long timeout = 3000, unsigned long responseTimeout = 3000);
+```
 
-Remember to do a
+Then remember to do a
 
 ```
 make clean
 ```
 
 
-### todo
+## todo
 * Temperature runtime adjustment (Done)
 * Outside temperature measure
 * Inside temperature measure
@@ -66,5 +69,5 @@ make clean
 * Finish and merge "tempClass" branch to master
 * python script on the raspberry for simplifying compilation, deployment and debugging
 
-### More
+## More
 http://playground.arduino.cc/Main/DisablingAutoResetOnSerialConnection

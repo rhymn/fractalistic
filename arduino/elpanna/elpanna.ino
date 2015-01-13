@@ -27,7 +27,7 @@ const float Kp = 8,
 
 const bool debug = false;
 
-const unsigned long postingInterval = 15000; // 5 minutes
+const unsigned long postingInterval = 1000 * 60 * 5; // 5 minutes
 unsigned long lastConnTime = 0;
 int desiredTemp = 60;
 
@@ -39,8 +39,16 @@ PID pid(Kp, Ki, Kd);
 // Variables in configuration.h
 Network network(mac, ip, myDns, server, port);
 
+float output;
+int outputRes;
+int currentTemp;
+
+String mode;
+
 // Arduino Setup
 void setup(){
+
+  mode = "home";
 
   // PinMode
   pinMode(one, OUTPUT);
@@ -56,12 +64,15 @@ void setup(){
   pid.setOutputMin(0);
   pid.setOutputMax(200);
 
-  // Serial  
-  // Serial.begin(9600);
+  // Set to zero when we start
+  heater.setEffect(0);
 
-  // Serial.println("Fractalistic starting");
+  Serial.begin(9600);
 
   if (debug) {
+    // Serial  
+
+    Serial.println("Fractalistic starting");
     Serial.print("Testing relays ...");
   
     for(int i = 1; i<11; i++){
@@ -72,7 +83,6 @@ void setup(){
     Serial.println("OK");
   }
 
-  network.begin();
 }
 
 void showError(bool error){
@@ -87,19 +97,32 @@ void showError(bool error){
   }
 }
 
+String parseJson(String jsonStr, String key){
+  int kStart = jsonStr.indexOf(key);
+  int divider = jsonStr.indexOf(":", kStart + 4);
+  int vStart = jsonStr.indexOf("\"", divider) + 1;
+
+  int vEnd = jsonStr.indexOf("\"", vStart) + 1;
+
+  String value = jsonStr.substring(vStart, vEnd - 1);
+
+  return value;
+}
+
+
 // Arduino Main Loop
 void loop(){
+  boolean isJson = false;
+  String jsonStr = "";
 
-  float output = 0;
-  int outputRes = 0;
-  int currentTemp = 0;
-  float setPoint = 0;
+  output = 0;
+  outputRes = 0;
+  currentTemp = 0;
   
   temp.measure();
   currentTemp = temp.getTemp();
-  setPoint = float(desiredTemp);
     
-  output = pid.compute(currentTemp, setPoint);
+  output = pid.compute(currentTemp, float(desiredTemp));
   
   // Convert to get resolution right
   outputRes = int((output + 10) * (9.0 / (pid.getOutputMax() - pid.getOutputMin())));
@@ -116,30 +139,75 @@ void loop(){
     digitalWrite(okLED, HIGH);
   }
 
-  network.manageConn();
 
-  if(millis() - lastConnTime > postingInterval){
+  if(Serial.available() > 0){
+    while(Serial.available() > 0){
+      char in = Serial.read();
 
-    String mode = Network::parseJson(network.getsettings(), "mode");
+      if(in == '{'){
+        isJson = true;
+      }
+
+      if(isJson){
+        jsonStr += in;
+      }
+
+      if(in == '}'){
+        isJson = false;
+      }
+    }
+
+    delay(200);
+
+    mode = parseJson(jsonStr, "mode");
 
     if(mode == "home"){
       desiredTemp = 60;
-      // Serial.println("Setting temp to 60");
+      Serial.println("Setting temp to 60");
     }
     else if(mode == "away"){
       desiredTemp = 30;
-      // Serial.println("Setting temp to 30");
-    }
-    else{
-      mode = "home";
+      Serial.println("Setting temp to 30");
     }
 
-    network.setstat(currentTemp, mode, output, outputRes);
+    // Only send json-data after a received message
 
-    lastConnTime = millis();
+    Serial.print("{");
+    Serial.print("'id':'main-log',");
+
+    Serial.print("'debug':");
+    Serial.print(debug);
+    Serial.print(",");
+
+    Serial.print("'err':");
+    Serial.print(temp.isError());
+    Serial.print(",");
+
+    Serial.print("'temp':");
+    Serial.print(currentTemp);
+    Serial.print(",");
+
+    Serial.print("'desiredTemp':");
+    Serial.print(desiredTemp);
+    Serial.print(",");
+
+    Serial.print("'outputRes':");
+    Serial.print(outputRes);
+    Serial.print(",");
+
+    Serial.print("'mode':");
+    Serial.print("'" + mode + "'");
+    Serial.print(",");
+
+    Serial.print("'output':");
+    Serial.print(output);
+    Serial.print("}");
+
+    Serial.println();
+
   }
 
-
-  delay(2000);
+  delay(10000);
 }
+
 

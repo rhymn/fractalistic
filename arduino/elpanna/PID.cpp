@@ -48,7 +48,7 @@ float PID::compute(float input, float setPoint){
 	long unsigned timeD = (now - _lastTime) / 1000; // Seconds since last computation
 
 	// Run every second minute	
-	if(timeD < 45){
+	if(timeD < 60){
 		return _lastOutput;
 	}
 		
@@ -94,24 +94,26 @@ float PID::compute(float input, float setPoint){
 	
 	_lastTime = now;
 
-/*
-	Serial.print("PID: New value: ");
+	Serial.print("{");
+	Serial.print("'id':'pid-log',");
+
+	Serial.print("'output':");
 	Serial.print(output);
-	Serial.println();
+	Serial.print(",");
 
-	Serial.print("PID: p=");
+	Serial.print("'p':");
 	Serial.print(p * _kp);
-	Serial.print(" ");
+	Serial.print(",");
 
-	Serial.print("i=");
+	Serial.print("'i':");
 	Serial.print(i * _ki);
-	Serial.print(" ");
+	Serial.print(",");
 
-	Serial.print("d=");
+	Serial.print("'d':");
 	Serial.print(d * _kd);
+	Serial.print("}");
 
 	Serial.println();
-*/
 
 	return output;
 }

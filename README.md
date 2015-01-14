@@ -19,6 +19,8 @@ Software in C++
 ### Raspberry Pi
 Proxy program handling settings and sends stats using web API every 30 minutes.
 
+proxy.py - url is read from config.py (not version controlled)
+
 #### Raspbian
 
 ##### uploading to Arduino

@@ -5,73 +5,112 @@ import datetime
 import re
 import json
 import time
-import urllib
+import urllib2
+from printhelp import ok, fail, inColor, writeflush
+import config
 
 ports = [
-	# Arduino Diecimila
+	# Arduino Diecimila on Linux
 	'/dev/ttyUSB0',
 
-	# Arduino Uno
+	# Arduino Uno on Linux
 	'/dev/ttyACM0'
 ]
 
+delay = 10
 arduinoDataObject = {}
+debug = True
 
 def getserial(ports):
 	for port in ports:
 		try:
 			ser = serial.Serial(port, 9600, timeout=2)
-			print 'Använder port %s' % port
+			print 'Using %s for Arduino port' % port
 			ser.setDTR(True)
+
+			# Allow Arduino some time since it might reset
+			time.sleep(3)
 			return ser
 		except serial.SerialException as e:
 			dummy = False
 
-	print 'Hittade ingen port, är Arduinon ansluten?'
+	print 'No port found, is the Arduino connected?'
 	exit()
 
 def readFromArduino(ser):
+	writeflush('Reading data from Arduino...')
 	buffer = ""
 
 	while buffer.count('{') < 1:
-		buffer += ser.readline()
+		line = ser.readline()
+		buffer += line
 
 	buffer = buffer.strip('\n').strip('\r').replace('\'', '"')
 
-	print buffer
-
 	try:
 		arduinoDataObject = json.loads(buffer)
-		return arduinoDataObject
 	except ValueError as e:
+		print fail()
 		return False
 
-def sendDataToArduino(data):
-	ser.write(b'{mode:"%s"}' % data['mode'])
+	if 'id' in arduinoDataObject:
+		print ok()
+		return arduinoDataObject
+
+	print fail()
+	return False
+
+
+def sendDataToArduino(ser, data):
+	writeflush('Sending data to Arduino...')
+	ser.write(data)
+	print ok()
 
 def publishData(data):
-	response = urllib.urlopen('http://r.pnd.se/setstat/temp/%s/mode/%s/output/%s/outputRes/%s' % (data['temp'], data['mode'], data['output'], data['outputRes'])).read()
-	print response
+	writeflush('Publishing data to web...')
+	handler = urllib2.urlopen('%s/setstat/temp/%s/mode/%s/output/%s/outputRes/%s' % (config.url, data['temp'], data['mode'], data['output'], data['outputRes']))
+
+	if handler.getcode() == 200:
+		print ok()
+		return True
+
+	print fail()
+	return False
+
+def getSettingsFromWeb():
+	writeflush('Fetching settings from web...')
+	handler = urllib2.urlopen('%s/getsettings' % config.url)
+
+	if handler.getcode() == 200:
+		print ok()
+		return handler.read()
+	
+	print fail()
+	return False
 
 def main(ser):
-	while 1:
-		now = datetime.datetime.now()
+	now = datetime.datetime.now()
 
-		# Get settings from web
-		settings = urllib.urlopen('http://r.pnd.se/getsettings').read()
-		settingsObject = json.loads(settings)
+	# Get settings from web
+	settings = getSettingsFromWeb()
+	settingsObject = json.loads(settings)
 
-		# Get data from Arduino
-		arduinoDataObject = readFromArduino(ser)
+	# Send settings to Arduino
+	sendDataToArduino(ser, b'{mode:"%s"}' % settingsObject['mode'])
 
-		# Send settings to Arduino
-		sendDataToArduino(settingsObject)
+	# Get data from Arduino
+	arduinoDataObject = readFromArduino(ser)
 
-		# Publicate data from Arduino to web
-		if(arduinoDataObject):
-			publishData(arduinoDataObject)
+	# Publish data from Arduino to web
+	if(arduinoDataObject):
+		if debug:
+			print arduinoDataObject
+		
+		publishData(arduinoDataObject)
 
-		time.sleep(10)
 
 ser = getserial(ports)
+print 'Using %s for url' % config.url
 main(ser)
+
+

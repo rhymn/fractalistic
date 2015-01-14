@@ -13,24 +13,15 @@ Remote Heater Control
 ### Arduino Uno
 PID Regulator controlling temperature with 6 relays in 9 steps
 
-Arduino client checks for changes and sends stats using the API every 5 minutes.
+Communicates with the Raspberry Pi via usb serial
+Software in C++
 
-### Arduino Ethernet Adapter
-Interface with the Internet
+### Raspberry Pi
+Proxy program handling settings and sends stats using web API every 30 minutes.
 
-### Software
+#### Raspbian
 
-#### Arduino PID Regulator and Network adapter
-C++
-
-#### Webapp
-A Node.js webapp that can set temperature and display stats from the Arduino
-
-hosted at Heroku, Mongodb at MongoHQ
-
-## Raspbian
-
-### uploading to Arduino
+##### uploading to Arduino
 "avrdude: stk500_getsync(): not in sync" this is most likely because the AutoResetOnSerial is enabled.
 "avrdude: stk500_recv(): programmer is not responding" this is likely because you've choosen the wrong Serial port. My default ports for the RPi are stated in read.py
 
@@ -43,15 +34,21 @@ sudo make upload
 sudo cat /dev/ttyACM0
 ```
 
-### Libraries
+##### Libraries
 Arduino libraries goes into /usr/share/arduino/libraries/
 
-### Crontab
+##### Crontab
 Run proxy script every n minutes
 
 ```
 */30 * * * * sudo python /home/david/fractalistic/python/proxy.py >/var/log/fractalistic 2> /var/log/fractalistic
 ```
+
+
+### API and Web app
+Displays current stats for the heater, user can interact and change mode between "home" and "away"
+
+Node.js hosted at Heroku, Mongodb at Compose
 
 
 ## todo

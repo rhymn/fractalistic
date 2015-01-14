@@ -53,11 +53,11 @@ Node.js hosted at Heroku, Mongodb at Compose
 
 ## todo
 * Temperature runtime adjustment (Done)
+* Finish and merge "tempClass" branch to master (Done)
+* Refactor arduino c++ code (Done)
 * Outside temperature measure
 * Inside temperature measure
 * Radiator / water pump control (on/off)
-* Refactor arduino c++ code
-* Finish and merge "tempClass" branch to master
 * python script on the raspberry for simplifying compilation, deployment and debugging
 
 ## More

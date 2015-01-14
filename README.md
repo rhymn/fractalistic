@@ -46,17 +46,11 @@ sudo cat /dev/ttyACM0
 ### Libraries
 Arduino libraries goes into /usr/share/arduino/libraries/
 
-#### Ethernet/Dhcp.h
-To prevent unwanted behaviour an adjustment to Dhcp.h must be made. If no ethernet connection is available the timeout is too long, this is adjusted to a few seconds with the following line:
+### Crontab
+Run proxy script every n minutes
 
 ```
-int beginWithDHCP(uint8_t *, unsigned long timeout = 3000, unsigned long responseTimeout = 3000);
-```
-
-Then remember to do a
-
-```
-make clean
+*/30 * * * * sudo python /home/david/fractalistic/python/proxy.py >/var/log/fractalistic 2> /var/log/fractalistic
 ```
 
 

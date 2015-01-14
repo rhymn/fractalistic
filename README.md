@@ -3,7 +3,7 @@ Remote Heater Control
 
 ![](https://github.com/rhymn/fractalistic/blob/master/extra/fracd.jpg)
 
-![](https://github.com/rhymn/fractalistic/blob/master/extra/fritzing.png)
+![](https://github.com/rhymn/fractalistic/blob/master/extra/fractalistic.png)
 
 ## Components
 

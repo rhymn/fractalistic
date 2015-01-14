@@ -18,6 +18,10 @@ class PID{
 
     float compute(float input, float setPoint);
 
+    float getLastP();
+    float getLastI();
+    float getLastD();
+
     long unsigned getLastMeasureTime();
 
    private:
@@ -25,13 +29,14 @@ class PID{
     float _ki;
     float _kd;
 
-	float _input;
+    float _input;
     float _output;
     float _setPoint;
 
     float _lastError;
     float _lastInput;
     float _lastOutput;
+    float _lastSetPoint;
 
     long unsigned _lastTime;
     float iTerm;
@@ -39,7 +44,7 @@ class PID{
     int _outMin;
     int _outMax;
 
-	float _lastP, _lastI, _lastD;
+    float _lastP, _lastI, _lastD;
 
 };
 

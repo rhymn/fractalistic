@@ -40,8 +40,7 @@ void Temp::measure(){
 
 
 int Temp::getTemp(){
-	return 52;
-	// return _temp;
+	return _temp;
 }
 
 

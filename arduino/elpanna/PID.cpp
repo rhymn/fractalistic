@@ -13,6 +13,10 @@ PID::PID(float kp, float ki, float kd){
 	_kd = kd;
 	
 	_lastTime = -100000;
+
+	_lastP = 0;
+	_lastI = 0;
+	_lastD = 0;
 }
 
 void PID::setOutputMax(float max){
@@ -47,8 +51,8 @@ float PID::compute(float input, float setPoint){
 	long unsigned now = millis();
 	long unsigned timeD = (now - _lastTime) / 1000; // Seconds since last computation
 
-	// Run every second minute	
-	if(timeD < 60){
+	// Run every second minute if set point hasn't changed
+	if(setPoint == _lastSetPoint && timeD < 60){
 		return _lastOutput;
 	}
 		
@@ -88,35 +92,30 @@ float PID::compute(float input, float setPoint){
 	_lastError = error;
 	_lastOutput = output;
 
-	_lastP = p;
-	_lastI = i;
-	_lastD = d;
+	_lastP = p * _kp;
+	_lastI = i * _ki;
+	_lastD = d * _kd;
+
+	_lastSetPoint = setPoint;
 	
 	_lastTime = now;
 
-	Serial.print("{");
-	Serial.print("'id':'pid-log',");
-
-	Serial.print("'output':");
-	Serial.print(output);
-	Serial.print(",");
-
-	Serial.print("'p':");
-	Serial.print(p * _kp);
-	Serial.print(",");
-
-	Serial.print("'i':");
-	Serial.print(i * _ki);
-	Serial.print(",");
-
-	Serial.print("'d':");
-	Serial.print(d * _kd);
-	Serial.print("}");
-
-	Serial.println();
-
 	return output;
 }
+
+
+float PID::getLastP(){
+	return _lastP;
+}
+
+float PID::getLastI(){
+	return _lastI;
+}
+
+float PID::getLastD(){
+	return _lastD;
+}
+
 
 long unsigned PID::getLastMeasureTime(){
 	return _lastTime;

@@ -2,8 +2,6 @@
 #include <PID.h>
 #include <Temp.h>
 #include <SPI.h>
-#include <Ethernet.h>
-#include <Network.h>
 #include <configuration.h>
 
 /**
@@ -30,14 +28,12 @@ const bool debug = false;
 const unsigned long postingInterval = 1000 * 60 * 5; // 5 minutes
 unsigned long lastConnTime = 0;
 int desiredTemp = 60;
+int lastDesiredTemp = desiredTemp;
 
 
 Temp temp(A0);
 Heater heater(one, two, three, four, five, six);
 PID pid(Kp, Ki, Kd);
-
-// Variables in configuration.h
-Network network(mac, ip, myDns, server, port);
 
 float output;
 int outputRes;
@@ -99,6 +95,11 @@ void showError(bool error){
 
 String parseJson(String jsonStr, String key){
   int kStart = jsonStr.indexOf(key);
+
+  if(kStart == -1){
+    return false;
+  }
+
   int divider = jsonStr.indexOf(":", kStart + 4);
   int vStart = jsonStr.indexOf("\"", divider) + 1;
 
@@ -161,16 +162,16 @@ void loop(){
 
     mode = parseJson(jsonStr, "mode");
 
-    if(mode == "home"){
-      desiredTemp = 60;
-      Serial.println("Setting temp to 60");
+    if(mode != false){
+      if(mode == "home"){
+        desiredTemp = 60;
+        // Serial.println("Setting temp to 60");
+      }
+      else if(mode == "away"){
+        desiredTemp = 30;
+        // Serial.println("Setting temp to 30");
+      }
     }
-    else if(mode == "away"){
-      desiredTemp = 30;
-      Serial.println("Setting temp to 30");
-    }
-
-    // Only send json-data after a received message
 
     Serial.print("{");
     Serial.print("'id':'main-log',");
@@ -199,15 +200,35 @@ void loop(){
     Serial.print("'" + mode + "'");
     Serial.print(",");
 
+    Serial.print("'lastP':");
+    Serial.print(pid.getLastP());
+    Serial.print(",");
+
+    Serial.print("'lastI':");
+    Serial.print(pid.getLastI());
+    Serial.print(",");
+
+    Serial.print("'lastD':");
+    Serial.print(pid.getLastD());
+    Serial.print(",");
+
+    Serial.print("'measureTime':");
+    Serial.print(pid.getLastMeasureTime());
+    Serial.print(",");
+
     Serial.print("'output':");
     Serial.print(output);
     Serial.print("}");
 
     Serial.println();
-
   }
 
-  delay(10000);
+  // Rest if desired temp has not changed
+  if(lastDesiredTemp == desiredTemp){
+    delay(30000);
+  }
+
+  lastDesiredTemp = desiredTemp;
 }
 
 

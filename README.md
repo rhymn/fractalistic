@@ -53,7 +53,9 @@ Displays current stats for the heater, user can interact and change mode between
 Node.js hosted at Heroku, Mongodb at Compose
 
 
-## todo
+## todo and current problems
+* Thermistor measuring temp gives wrong values - figure out why
+* "mode" is set wrongly when given dummy names, should only set to "home" and "away"
 * Temperature runtime adjustment (Done)
 * Finish and merge "tempClass" branch to master (Done)
 * Refactor arduino c++ code (Done)

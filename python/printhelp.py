@@ -8,10 +8,10 @@ colors = {
 }
 
 def ok():
-	return inColor('green', 'OK')
+	return inColor('green', 'yes')
 
 def fail():
-	return inColor('red', 'FAIL')
+	return inColor('red', 'no')
 
 def inColor(color, text):
 

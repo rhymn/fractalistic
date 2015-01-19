@@ -23,3 +23,5 @@ AppleDouble
 .AppleDouble
 configuration.h
 *.DS_Store
+# Platformio
+.pioenvs/

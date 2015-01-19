@@ -54,8 +54,8 @@ Node.js hosted at Heroku, Mongodb at Compose
 
 
 ## todo and current problems
-* Thermistor measuring temp gives wrong values - figure out why
-* "mode" is set wrongly when given dummy names, should only set to "home" and "away"
+* Thermistor measuring temp gives wrong values - figure out why (Seems this was an int/float thing)
+* "mode" is set wrongly when given dummy names, should only set to "home" and "away" (Done)
 * Temperature runtime adjustment (Done)
 * Finish and merge "tempClass" branch to master (Done)
 * Refactor arduino c++ code (Done)

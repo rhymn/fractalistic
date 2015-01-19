@@ -7,14 +7,22 @@ import json
 import time
 import urllib2
 from printhelp import ok, fail, inColor, writeflush
-import config
+
+try:
+	import config
+except ImportError:
+	print "Missing config file: config.py"
+	exit(1)
 
 ports = [
 	# Arduino Diecimila on Linux
 	'/dev/ttyUSB0',
 
 	# Arduino Uno on Linux
-	'/dev/ttyACM0'
+	'/dev/ttyACM0',
+
+	# Arduino Uno on Mac OS X
+	'/dev/cu.usbmodem1411'
 ]
 
 delay = 10
@@ -32,7 +40,9 @@ def getserial(ports):
 			time.sleep(3)
 			return ser
 		except serial.SerialException as e:
-			dummy = False
+			pass
+		except OSError as e:
+			pass
 
 	print 'No port found, is the Arduino connected?'
 	exit()
@@ -63,7 +73,7 @@ def readFromArduino(ser):
 
 def sendDataToArduino(ser, data):
 	writeflush('Sending data to Arduino...')
-	ser.write(data)
+	ser.write(data.encode())
 	print ok()
 
 def publishData(data):

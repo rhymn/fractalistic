@@ -26,3 +26,6 @@ configuration.h
 # Platformio
 .pioenvs/
 .sconsign.dblite
+
+# Python
+*.pyc

@@ -25,3 +25,4 @@ configuration.h
 *.DS_Store
 # Platformio
 .pioenvs/
+.sconsign.dblite

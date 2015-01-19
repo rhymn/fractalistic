@@ -30,8 +30,6 @@ void Temp::measure(){
 	_res = sum / num;
 
 	_temp = Temp::getTempFromRes( _res );
-
-	return;
 }
 
 
@@ -49,7 +47,7 @@ int Temp::getLastRawTemp(){
 
 
 int Temp::getTempFromRes(float r){
-	int temp;
+	float temp;
 	
 	temp = (r - 815.8) / 7.95;
 

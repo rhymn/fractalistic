@@ -10,14 +10,20 @@ class Temp{
     void measure();
     bool isError();
 
+    float getLastRes();
+    int getLastRawTemp();
+
    private:
     int getTempFromRes(float r);
-    float getOhmFromThermistor();
+    float getOhm();
 
     int _thermistorPin;
 
     int _temp;
+    int _lastRawTemp;
+
     float _res;
+    float _lastRes;
 
     bool _isErr;
 };

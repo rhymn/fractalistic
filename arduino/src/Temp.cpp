@@ -15,7 +15,7 @@ void Temp::measure(){
 
 	// Measure num times
 	for(int i = 0; i<num; i++){
-		measure[i] = Temp::getOhmFromThermistor();
+		measure[i] = Temp::getOhm();
 
 		// Wait 0.01 sec
 		delay(10);
@@ -29,11 +29,7 @@ void Temp::measure(){
 	// Calculate average
 	_res = sum / num;
 
-
 	_temp = Temp::getTempFromRes( _res );
-
-	// Serial.print("Temp: ");
-	// Serial.println(_temp);
 
 	return;
 }
@@ -43,11 +39,21 @@ int Temp::getTemp(){
 	return _temp;
 }
 
+float Temp::getLastRes(){
+	return _lastRes;
+}
+
+int Temp::getLastRawTemp(){
+	return _lastRawTemp;
+}
+
 
 int Temp::getTempFromRes(float r){
 	int temp;
 	
 	temp = (r - 815.8) / 7.95;
+
+	_lastRawTemp = temp;
 	
 	// Make sure we don't get crazy output ..
 	if(temp < 10){
@@ -62,7 +68,7 @@ int Temp::getTempFromRes(float r){
 }
 
 
-float Temp::getOhmFromThermistor(){
+float Temp::getOhm(){
   int sensorValue;
 
   float v;
@@ -76,6 +82,8 @@ float Temp::getOhmFromThermistor(){
 
   // Calculate resistance
   r = 10000 * ((5/v)-1);
+
+  _lastRes = r;
 
   if(r < rMin){
 	_isErr = true;

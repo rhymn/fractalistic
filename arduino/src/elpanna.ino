@@ -1,16 +1,17 @@
-#include <Heater.h>
-#include <PID.h>
-#include <Temp.h>
-#include <SPI.h>
-#include <configuration.h>
+#include "Heater.h"
+#include "PID.h"
+#include "Temp.h"
+#include "SPI.h"
 
 /**
  * Fractalistic main
  *
  */
 
-const int okLED = 8;
-const int errLED = 9;
+const int MINIMAL_EFFECT = 1;
+
+const int OK_LED = 8;
+const int ERR_LED = 9;
 
 const int one = 6;
 const int two = 7;
@@ -25,7 +26,6 @@ const float Kp = 8,
 
 const bool debug = false;
 
-const unsigned long postingInterval = 1000 * 60 * 5; // 5 minutes
 unsigned long lastConnTime = 0;
 int desiredTemp = 60;
 int lastDesiredTemp = desiredTemp;
@@ -53,8 +53,8 @@ void setup(){
   pinMode(four, OUTPUT);
   pinMode(five, OUTPUT);
   pinMode(six, OUTPUT);
-  pinMode(errLED, OUTPUT);
-  pinMode(okLED, OUTPUT);
+  pinMode(ERR_LED, OUTPUT);
+  pinMode(OK_LED, OUTPUT);
 
   // PID
   pid.setOutputMin(0);
@@ -81,23 +81,12 @@ void setup(){
 
 }
 
-void showError(bool error){
-  if(error){
-    digitalWrite(errLED, HIGH);
-    digitalWrite(okLED, LOW);
-  }
-  
-  else{
-    digitalWrite(errLED, LOW);
-    digitalWrite(okLED, HIGH);
-  }
-}
 
 String parseJson(String jsonStr, String key){
   int kStart = jsonStr.indexOf(key);
 
   if(kStart == -1){
-    return false;
+    return "";
   }
 
   int divider = jsonStr.indexOf(":", kStart + 4);
@@ -115,6 +104,7 @@ String parseJson(String jsonStr, String key){
 void loop(){
   boolean isJson = false;
   String jsonStr = "";
+  String jsonRead = "";
 
   output = 0;
   outputRes = 0;
@@ -128,20 +118,22 @@ void loop(){
   // Convert to get resolution right
   outputRes = int((output + 10) * (9.0 / (pid.getOutputMax() - pid.getOutputMin())));
   
-  heater.setEffect(outputRes);
-  
   if(temp.isError()){
-    digitalWrite(errLED, HIGH);
-    digitalWrite(okLED, LOW);
+    digitalWrite(ERR_LED, HIGH);
+    digitalWrite(OK_LED, LOW);
+
+    heater.setEffect(MINIMAL_EFFECT);
   }
   
   else{
-    digitalWrite(errLED, LOW);
-    digitalWrite(okLED, HIGH);
+    digitalWrite(ERR_LED, LOW);
+    digitalWrite(OK_LED, HIGH);
+
+    heater.setEffect(outputRes);
   }
+  
 
-
-  if(Serial.available() > 0){
+  if(Serial.available() > 0){    
     while(Serial.available() > 0){
       char in = Serial.read();
 
@@ -160,17 +152,15 @@ void loop(){
 
     delay(200);
 
-    mode = parseJson(jsonStr, "mode");
+    jsonRead = parseJson(jsonStr, "mode");
 
-    if(mode != false){
-      if(mode == "home"){
-        desiredTemp = 60;
-        // Serial.println("Setting temp to 60");
-      }
-      else if(mode == "away"){
-        desiredTemp = 30;
-        // Serial.println("Setting temp to 30");
-      }
+    if(jsonRead == "home"){
+      mode = "home";
+      desiredTemp = 60;
+    }
+    else if(jsonRead == "away"){
+      mode = "away";
+      desiredTemp = 30;
     }
 
     Serial.print("{");
@@ -194,6 +184,14 @@ void loop(){
 
     Serial.print("'outputRes':");
     Serial.print(outputRes);
+    Serial.print(",");
+
+    Serial.print("'lastRawTemp':");
+    Serial.print(temp.getLastRawTemp());
+    Serial.print(",");
+
+    Serial.print("'lastRes':");
+    Serial.print(temp.getLastRes());
     Serial.print(",");
 
     Serial.print("'mode':");

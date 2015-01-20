@@ -20,26 +20,21 @@ const int four = 5;
 const int five = 2;
 const int six = 3;
 
-const float Kp = 8, 
-            Ki = 0.2, 
-            Kd = 5;
-
 const bool debug = false;
 
-unsigned long lastConnTime = 0;
 int desiredTemp = 60;
 int lastDesiredTemp = desiredTemp;
 
-
 Temp temp(A0);
 Heater heater(one, two, three, four, five, six);
-PID pid(Kp, Ki, Kd);
+PID pid(8, 0.2, 5);
 
 float output;
 int outputRes;
 int currentTemp;
 
 String mode;
+String forecast;
 
 // Arduino Setup
 void setup(){
@@ -89,7 +84,7 @@ String parseJson(String jsonStr, String key){
     return "";
   }
 
-  int divider = jsonStr.indexOf(":", kStart + 4);
+  int divider = jsonStr.indexOf(":", kStart + 1);
   int vStart = jsonStr.indexOf("\"", divider) + 1;
 
   int vEnd = jsonStr.indexOf("\"", vStart) + 1;
@@ -103,8 +98,8 @@ String parseJson(String jsonStr, String key){
 // Arduino Main Loop
 void loop(){
   boolean isJson = false;
-  String jsonStr = "";
-  String jsonRead = "";
+
+  String jsonStr;
 
   output = 0;
   outputRes = 0;
@@ -152,13 +147,14 @@ void loop(){
 
     delay(200);
 
-    jsonRead = parseJson(jsonStr, "mode");
+    String jsonMode = parseJson(jsonStr, "mode");
+    String jsonOutside = parseJson(jsonStr, "outside");
 
-    if(jsonRead == "home"){
+    if(jsonMode == "home"){
       mode = "home";
       desiredTemp = 60;
     }
-    else if(jsonRead == "away"){
+    else if(jsonMode == "away"){
       mode = "away";
       desiredTemp = 30;
     }
@@ -196,6 +192,10 @@ void loop(){
 
     Serial.print("'mode':");
     Serial.print("'" + mode + "'");
+    Serial.print(",");
+
+    Serial.print("'outside':");
+    Serial.print("'" + outside + "'");
     Serial.print(",");
 
     Serial.print("'lastP':");

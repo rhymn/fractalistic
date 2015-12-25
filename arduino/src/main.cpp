@@ -22,7 +22,10 @@ const int six = 3;
 
 const bool debug = false;
 
-int desiredTemp = 60;
+const int tempHome = 63; // Celcius
+const int tempAway = 30; // Celcius
+
+int desiredTemp = tempHome;
 int lastDesiredTemp = desiredTemp;
 
 Temp temp(A0);
@@ -148,15 +151,15 @@ void loop(){
     delay(200);
 
     String jsonMode = parseJson(jsonStr, "mode");
-    String jsonOutside = parseJson(jsonStr, "outside");
+    String outside = parseJson(jsonStr, "outside");
 
     if(jsonMode == "home"){
       mode = "home";
-      desiredTemp = 60;
+      desiredTemp = tempHome;
     }
     else if(jsonMode == "away"){
       mode = "away";
-      desiredTemp = 30;
+      desiredTemp = tempAway;
     }
 
     Serial.print("{");
